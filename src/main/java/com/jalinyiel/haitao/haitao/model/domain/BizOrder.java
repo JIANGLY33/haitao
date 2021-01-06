@@ -2,6 +2,7 @@ package com.jalinyiel.haitao.haitao.model.domain;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,9 @@ import java.util.Date;
  * @author Jalinyiel
  */
 @Data
-public class BizOrder {
+public class BizOrder implements Serializable {
+
+    private static final long serialVersionUID = 4133239948624012172L;
 
     /**
      * 主键
@@ -26,6 +29,11 @@ public class BizOrder {
      * 订单状态
      */
     private Byte status;
+
+    /**
+     * 商品ID
+     */
+    private Long item_id;
 
     /**
      * 对应的物流订单号

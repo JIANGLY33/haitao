@@ -2,6 +2,7 @@ package com.jalinyiel.haitao.haitao.model.domain;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,10 @@ import java.util.Date;
  * @author Jalinyiel
  */
 @Data
-public class LogisOrder {
+public class LogisOrder implements Serializable {
+
+    private static final long serialVersionUID = 2154439838240786655L;
+
     /**
      * 主键
      */

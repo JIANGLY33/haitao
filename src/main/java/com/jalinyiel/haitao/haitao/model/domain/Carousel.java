@@ -2,6 +2,7 @@ package com.jalinyiel.haitao.haitao.model.domain;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,9 @@ import java.util.Date;
  * @author Jalinyiel
  */
 @Data
-public class Carousel {
+public class Carousel implements Serializable {
+
+    private static final long serialVersionUID = 452733256249053123L;
 
     /**
      * 主键
@@ -31,6 +34,11 @@ public class Carousel {
      * 轮播结束时间
      */
     private Date endTime;
+
+    /**
+     * 轮播状态
+     */
+    private Byte status;
 
     /**
      * 描述信息

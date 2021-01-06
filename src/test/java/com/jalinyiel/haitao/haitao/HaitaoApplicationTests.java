@@ -23,10 +23,11 @@ class HaitaoApplicationTests {
     @Test
     void insertUserTest() {
         User user = new User();
-        user.setUserName("root");
-        user.setPassword("root");
+        user.setUserName("admin2");
+        user.setPassword("admin2");
         user.setType((byte) 0);
-        Long newUser = userMapper.createUser(user);
+        userMapper.createUser(user);
+        Long newUser = user.getId();
         System.out.println(newUser);
     }
 

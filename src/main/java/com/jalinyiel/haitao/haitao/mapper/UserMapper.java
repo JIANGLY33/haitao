@@ -27,6 +27,10 @@ public interface UserMapper {
     @ResultMap("userDo")
     User findByUsername(@Param("username") String username);
 
+    @Select("SELECT * FROM user WHERE id = #{id}")
+    @ResultMap("userDo")
+    User findById(@Param("id") Long id);
+
     @Insert({"<script>",
             "INSERT INTO user(id, user_name, password, description, portrait, gender, type, gmt_create, gmt_modified) ",
             "VALUES (#{id}, #{userName}, #{password} ,#{description},#{portrait},#{gender},#{type},now(),now()",
