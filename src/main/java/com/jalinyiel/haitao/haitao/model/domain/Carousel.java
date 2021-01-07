@@ -31,6 +31,11 @@ public class Carousel implements Serializable {
     private Date startTime;
 
     /**
+     * 轮播图片
+     */
+    private String image;
+
+    /**
      * 轮播结束时间
      */
     private Date endTime;

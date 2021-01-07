@@ -1,10 +1,7 @@
 package com.jalinyiel.haitao.haitao.mapper;
 
 import com.jalinyiel.haitao.haitao.model.domain.Carousel;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface CarouselMapper {
@@ -18,7 +15,8 @@ public interface CarouselMapper {
             @Result(column = "end_time", property = "endTime"),
             @Result(column = "memo", property = "memo"),
             @Result(column = "gmt_create", property = "gmtCreate"),
-            @Result(column = "gmt_modified", property = "gmtModified")
+            @Result(column = "gmt_modified", property = "gmtModified"),
+            @Result(column = "image", property = "image")
     })
     Carousel findById(Long id);
 }
