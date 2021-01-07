@@ -1,6 +1,7 @@
 package com.jalinyiel.haitao.haitao.mapper;
 
 import com.jalinyiel.haitao.haitao.model.domain.Item;
+import com.jalinyiel.haitao.haitao.model.vo.CategoryNumVo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -45,5 +46,46 @@ public interface ItemMapper {
             "</script>"})
     @ResultMap("itemDo")
     List<Item> findItemsByCategory(Long categoryId);
+
+    /**
+     * cz: 查询所有类目对应的商品数目
+     * @return
+     */
+    @Select({"<script>",
+            "SELECT i.category_id, ic.name, ic.description, count(*) num FROM haitao.item i",
+            "LEFT JOIN haitao.item_category ic",
+            "ON i.category_id=ic.id",
+            "GROUP BY category_id;",
+            "</script>"})
+    @Results(id = "categoryNumDo", value = {
+            @Result(column = "category_id", property = "categoryId"),
+            @Result(column = "name", property = "name"),
+            @Result(column = "description", property = "description"),
+            @Result(column = "num", property = "num"),
+    })
+    List<CategoryNumVo> getCategoryNum();
+
+    /**
+     * cz: 根据价格查询商品
+     * @param price
+     * @return
+     */
+    @Select({"<script>",
+            "SELECT * FROM haitao.item WHERE price&lt;=#{price}",
+            "</script>"})
+    @ResultMap("itemDo")
+    List<Item> getItemUnderPrice(Long price);
+
+    /**
+     * cz: 根据类型和价格筛选商品
+     * @param categoryId
+     * @param price
+     * @return
+     */
+    @Select({"<script>",
+            "SELECT * FROM item WHERE category_id = #{categoryId} AND price&lt;=#{price}",
+            "</script>"})
+    @ResultMap("itemDo")
+    List<Item> getItemByCategoryUnderPrice(Long categoryId, Long price);
 
 }
