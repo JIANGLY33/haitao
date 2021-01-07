@@ -29,4 +29,21 @@ public interface ItemMapper {
             "</script>"})
     @ResultMap("itemDo")
     List<Item> findItemsByActivityId(Long activityId);
+
+    /**
+     * cz: get all items
+     * @return
+     */
+    @Select({"<script>",
+            "SELECT * FROM item",
+            "</script>"})
+    @ResultMap("itemDo")
+    List<Item> findAllItems();
+
+    @Select({"<script>",
+            "SELECT * FROM item WHERE category_id = #{categoryId}",
+            "</script>"})
+    @ResultMap("itemDo")
+    List<Item> findItemsByCategory(Long categoryId);
+
 }

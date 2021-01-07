@@ -17,4 +17,6 @@ public interface ItemService {
 
     List<Item> getByCategory(Long categoryId) throws DaoException;
 
+    List<Item> getAllItems() throws DaoException;
+
 }

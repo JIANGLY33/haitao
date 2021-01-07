@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface ItemCategoryMapper {
 
@@ -17,5 +19,5 @@ public interface ItemCategoryMapper {
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified")
     })
-    ItemCategory getAll();
+    List<ItemCategory> getAll();
 }

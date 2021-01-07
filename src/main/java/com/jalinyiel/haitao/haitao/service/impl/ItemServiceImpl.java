@@ -1,14 +1,25 @@
 package com.jalinyiel.haitao.haitao.service.impl;
 
+import com.jalinyiel.haitao.haitao.mapper.ItemMapper;
 import com.jalinyiel.haitao.haitao.model.domain.Item;
 import com.jalinyiel.haitao.haitao.model.exception.DaoException;
 import com.jalinyiel.haitao.haitao.service.ItemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ItemServiceImpl implements ItemService {
+
+    @Autowired
+    ItemMapper itemMapper;
+
+    @Override
+    public List<Item> getAllItems() throws DaoException {
+        return itemMapper.findAllItems();
+    }
+
     @Override
     public Item getById(Long id) throws DaoException {
         return null;
@@ -31,6 +42,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getByCategory(Long categoryId) throws DaoException {
-        return null;
+        return itemMapper.findItemsByCategory(categoryId);
     }
 }
