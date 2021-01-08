@@ -1,10 +1,7 @@
 package com.jalinyiel.haitao.haitao.mapper;
 
 import com.jalinyiel.haitao.haitao.model.domain.LogisOrder;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface LogisOrderMapper {
@@ -20,4 +17,12 @@ public interface LogisOrderMapper {
             @Result(column = "gmt_modified", property = "gmtModified")
     })
     LogisOrder findByBizOrderId(Long Id);
+
+    @Insert({"<script>",
+            "INSERT INTO logis_order(id, zip_code, phone_number, address, receiver, gmt_create, gmt_modified) ",
+            "VALUES (#{id}, #{zipCode}, #{phoneNumber} ,#{address},#{receiver},now(),now()",
+            ")",
+            "</script>"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    Long insertLogisOrder(LogisOrder logisOrder);
 }

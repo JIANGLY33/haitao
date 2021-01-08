@@ -13,7 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RestController
+@RestController("user")
 public class UserController {
 
     @Autowired
@@ -30,6 +30,7 @@ public class UserController {
                     .getRequest();
             String username = logInVo.getUsername();
             String logInTag = UserUtil.getLogInTag(username);
+            request.getSession().setAttribute("username",username);
             request.getSession().setAttribute(username,logInTag);
             return ResponseResult.successResult(CommonResultCode.SUCCESS, logInTag);
         } catch (DaoException daoException) {

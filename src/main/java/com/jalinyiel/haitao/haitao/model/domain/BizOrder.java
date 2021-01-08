@@ -1,5 +1,6 @@
 package com.jalinyiel.haitao.haitao.model.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.Date;
  * @author Jalinyiel
  */
 @Data
+@Builder
 public class BizOrder implements Serializable {
 
     private static final long serialVersionUID = 4133239948624012172L;
@@ -21,9 +23,9 @@ public class BizOrder implements Serializable {
     private Long id;
 
     /**
-     * 下单者id
+     * 下单者
      */
-    private Long buyerId;
+    private String buyer;
 
     /**
      * 订单状态
@@ -68,12 +70,27 @@ public class BizOrder implements Serializable {
     /**
      * 支付者id
      */
-    private Long payerId;
+    private String payer;
 
     /**
      * 备注信息
      */
     private String memo;
+
+    /**
+     * 商品图片
+     */
+    private String image;
+
+    /**
+     * 父订单号
+     */
+    private Long parentId;
+
+    /**
+     * 订单类型: 0-父子订单 1-父订单 2-子订单
+     */
+    private Byte type;
 
     /**
      * 创建时间

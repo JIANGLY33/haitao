@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.util.List;
 
 @CrossOrigin
-@RestController
+@RestController("iterm")
 public class ItemController {
 
     /**

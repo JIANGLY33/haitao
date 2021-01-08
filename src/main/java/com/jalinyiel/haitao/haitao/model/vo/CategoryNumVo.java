@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 public class CategoryNumVo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 8178977937300265828L;
 
     /**
      * 对应商品类目的id
