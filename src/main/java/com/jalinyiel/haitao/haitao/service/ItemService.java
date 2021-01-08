@@ -3,6 +3,7 @@ package com.jalinyiel.haitao.haitao.service;
 import com.jalinyiel.haitao.haitao.model.domain.Item;
 import com.jalinyiel.haitao.haitao.model.exception.DaoException;
 import com.jalinyiel.haitao.haitao.model.vo.CategoryNumVo;
+import com.jalinyiel.haitao.haitao.model.vo.ItemVo;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface ItemService {
 
     List<Item> getByCategory(Long categoryId) throws DaoException;
 
-    List<Item> getAllItems() throws DaoException;
+    List<ItemVo> getAllItems() throws DaoException;
 
     /**
      * cz: 查询所有类目对应的商品数目
@@ -42,5 +43,12 @@ public interface ItemService {
      * @throws DaoException
      */
     List<Item> getItemByCategoryUnderPrice(Long categoryId, Long price) throws DaoException;
+
+    /**
+     * cz: 根据活动id查询商品
+     * @param activityId
+     * @return
+     */
+    List<ItemVo> getItemsByActivity(Long activityId) throws DaoException;
 
 }

@@ -43,12 +43,12 @@ public class Activity implements Serializable {
     /**
      * 活动开始时间
      */
-    private Long startTime;
+    private Date startTime;
 
     /**
      * 活动结束时间
      */
-    private Long endTime;
+    private Date endTime;
 
     /**
      * 创建时间

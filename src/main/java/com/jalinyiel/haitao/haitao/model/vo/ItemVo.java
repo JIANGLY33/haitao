@@ -1,4 +1,4 @@
-package com.jalinyiel.haitao.haitao.model.domain;
+package com.jalinyiel.haitao.haitao.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -6,15 +6,10 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * 商品
- *
- * @author Jalinyiel
- */
 @Data
-public class Item implements Serializable {
+public class ItemVo implements Serializable {
 
-    private static final long serialVersionUID = 6562797484236942246L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
@@ -35,6 +30,11 @@ public class Item implements Serializable {
      * 商品对应的类目id
      */
     private Long categoryId;
+
+    /**
+     * 商品对应的类目名称
+     */
+    private String categoryName;
 
     /**
      * 商品展示图片
@@ -72,4 +72,5 @@ public class Item implements Serializable {
      * 商品数量
      */
     private Integer number;
+
 }

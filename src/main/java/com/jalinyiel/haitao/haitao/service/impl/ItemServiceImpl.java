@@ -4,6 +4,7 @@ import com.jalinyiel.haitao.haitao.mapper.ItemMapper;
 import com.jalinyiel.haitao.haitao.model.domain.Item;
 import com.jalinyiel.haitao.haitao.model.exception.DaoException;
 import com.jalinyiel.haitao.haitao.model.vo.CategoryNumVo;
+import com.jalinyiel.haitao.haitao.model.vo.ItemVo;
 import com.jalinyiel.haitao.haitao.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class ItemServiceImpl implements ItemService {
     ItemMapper itemMapper;
 
     @Override
-    public List<Item> getAllItems() throws DaoException {
+    public List<ItemVo> getAllItems() throws DaoException {
         return itemMapper.findAllItems();
     }
 
@@ -43,7 +44,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getByCategory(Long categoryId) throws DaoException {
-        return null;
+        return itemMapper.findItemsByCategory(categoryId);
     }
 
     /**
@@ -76,5 +77,15 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> getItemByCategoryUnderPrice(Long categoryId, Long price) throws DaoException {
         return itemMapper.getItemByCategoryUnderPrice(categoryId, price);
+    }
+
+    /**
+     * cz: 根据活动id查询商品
+     * @param activityId
+     * @return
+     */
+    @Override
+    public List<ItemVo> getItemsByActivity(Long activityId) throws DaoException {
+        return itemMapper.findItemsByActivity(activityId);
     }
 }
