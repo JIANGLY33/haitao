@@ -38,4 +38,18 @@ public class ActivityController {
         }
     }
 
+    /**
+     * 查询所有活动的所有商品
+     * @return
+     */
+    @RequestMapping(value = "/getactivities", method = RequestMethod.GET)
+    ResponseResult getAllAct(){
+        try {
+            List<ActivityItemVo> activities = activityService.getActivityAllItem();
+            return ResponseResult.successResult(CommonResultCode.SUCCESS, activities);
+        } catch (DaoException daoException) {
+            return ResponseResult.failedResult(CommonResultCode.FAILED);
+        }
+    }
+
 }

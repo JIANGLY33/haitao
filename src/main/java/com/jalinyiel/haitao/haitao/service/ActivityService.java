@@ -14,6 +14,6 @@ public interface ActivityService {
     /**
      * 查询所有活动的所有商品(嵌套)
      */
-//    List<ActivityItemVo> getActivityAllItem() throws DaoException;
+    List<ActivityItemVo> getActivityAllItem() throws DaoException;
 
 }

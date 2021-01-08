@@ -25,8 +25,8 @@ public class ActivityServiceImpl implements ActivityService {
     /**
      * 查询所有活动的所有商品(嵌套)
      */
-//    @Override
-//    public List<ActivityItemVo> getActivityAllItem() throws DaoException {
-//        return activityMapper.findActivityAllItem();
-//    }
+    @Override
+    public List<ActivityItemVo> getActivityAllItem() throws DaoException {
+        return activityMapper.findActivityAllItem();
+    }
 }

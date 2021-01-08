@@ -26,12 +26,33 @@ public interface ItemMapper {
     })
     Item findById(Long id);
 
+    /**
+     * 查询所有活动的所有商品(子查询)
+     * @param activityId
+     * @return
+     */
     @Select({"<script>",
-            "SELECT * FROM item WHERE id IN (",
-            "SELECT item_id FROM activity_item WHERE activity_id = #{activityId})",
+            "SELECT *, ic.name category_name FROM item i",
+            "LEFT JOIN item_category ic",
+            "ON i.category_id = ic.id",
+            "WHERE i.id IN (",
+            "SELECT item_id FROM activity_item WHERE activity_id = 1)",
             "</script>"})
-    @ResultMap("itemDo")
-    List<Item> findItemsByActivityId(Long activityId);
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "name", property = "name"),
+            @Result(column = "description", property = "description"),
+            @Result(column = "category_id", property = "categoryId"),
+            @Result(column = "category_name", property = "categoryName"),
+            @Result(column = "images", property = "images"),
+            @Result(column = "price", property = "price"),
+            @Result(column = "status", property = "status"),
+            @Result(column = "rate", property = "rate"),
+            @Result(column = "gmt_create", property = "gmtCreate"),
+            @Result(column = "gmt_modified", property = "gmtModified"),
+            @Result(column = "number", property = "number")
+    })
+    List<ItemVo> findItemsByActivityId(Long activityId);
 
     /**
      * cz: 查询所有商品

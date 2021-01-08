@@ -66,6 +66,6 @@ public class ActivityItemVo implements Serializable {
     /**
      * 活动下的商品
      */
-    private List<Item> items;
+    private List<ItemVo> items;
 
 }
