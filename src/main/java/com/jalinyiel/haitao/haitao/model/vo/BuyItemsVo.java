@@ -36,6 +36,8 @@ public class BuyItemsVo implements Serializable{
 
         private Long itemId;
 
+        private String itemName;
+
         private Long actualPrice;
 
         private Integer amount;

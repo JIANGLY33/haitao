@@ -68,7 +68,7 @@ public class BizOrder implements Serializable {
     private Date endTime;
 
     /**
-     * 支付者id
+     * 支付者
      */
     private String payer;
 
