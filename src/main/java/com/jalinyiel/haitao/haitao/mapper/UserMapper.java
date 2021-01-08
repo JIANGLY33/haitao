@@ -47,6 +47,9 @@ public interface UserMapper {
         public String updateUser(User user) {
             return new SQL(){{
                 UPDATE("user");
+                if (null != user.getUserName()) {
+                    SET("user_name = #{userName}");
+                }
                 if (null != user.getPassword()) {
                     SET("password = #{password}");
                 }

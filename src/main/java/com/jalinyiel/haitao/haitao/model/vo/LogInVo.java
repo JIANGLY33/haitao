@@ -12,4 +12,7 @@ public class LogInVo implements Serializable {
     private String username;
 
     private String password;
+
+    public LogInVo(String username, String password) {
+    }
 }
