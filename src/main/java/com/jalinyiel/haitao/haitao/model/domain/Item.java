@@ -64,4 +64,9 @@ public class Item implements Serializable {
      * 修改时间
      */
     private Date gmtModified;
+
+    /**
+     * 商品数量
+     */
+    private Integer number;
 }
