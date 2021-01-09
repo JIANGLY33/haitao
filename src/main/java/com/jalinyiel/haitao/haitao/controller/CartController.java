@@ -30,7 +30,8 @@ public class CartController {
      */
     @RequestMapping(value = "/getCartItems", method = RequestMethod.GET)
     ResponseResult<List<CartItemVo>> getCartItems(HttpServletRequest httpServletRequest) {
-        String username = httpServletRequest.getSession().getAttribute("username").toString();
+        String username = httpServletRequest.getHeader("username");
+        //String username = httpServletRequest.getSession().getAttribute("username").toString();
         List<CartItemVo> cartItemVos = cartService.getCartItems(username);
         return ResponseResult.successResult(CommonResultCode.SUCCESS, cartItemVos);
     }
@@ -44,7 +45,8 @@ public class CartController {
      */
     @RequestMapping(value = "/addItemToCart", method = RequestMethod.POST)
     ResponseResult addItemsToCart(@RequestBody BuyItemsVo.BuyItem buyItem, HttpServletRequest httpServletRequest) {
-        String username = httpServletRequest.getSession().getAttribute("username").toString();
+        String username = httpServletRequest.getHeader("username");
+        //String username = httpServletRequest.getSession().getAttribute("username").toString();
         if(cartService.addItemToCart(username, buyItem)) {
             return ResponseResult.successResult(CommonResultCode.SUCCESS);
         }
@@ -60,7 +62,8 @@ public class CartController {
      */
     @RequestMapping(value = "/removeItemFromCart", method = RequestMethod.POST)
     ResponseResult removeItemsFromCart(@RequestBody BuyItemsVo.BuyItem buyItem, HttpServletRequest httpServletRequest) {
-        String username = httpServletRequest.getSession().getAttribute("username").toString();
+        String username = httpServletRequest.getHeader("username");
+        //String username = httpServletRequest.getSession().getAttribute("username").toString();
         if(cartService.removeItemFromCart(username, buyItem)) {
             return ResponseResult.successResult(CommonResultCode.SUCCESS);
         }
@@ -79,7 +82,8 @@ public class CartController {
     ResponseResult<Integer> adjustItemAmountInCart(@RequestParam("itemId") Long itemId,
                                                    @RequestParam("amount") Integer amount,
                                                    HttpServletRequest httpServletRequest) {
-        String username = httpServletRequest.getSession().getAttribute("username").toString();
+        String username = httpServletRequest.getHeader("username");
+        //String username = httpServletRequest.getSession().getAttribute("username").toString();
         Integer row = cartService.adjustItemAmountInCart(username, itemId, amount);
         return ResponseResult.successResult(CommonResultCode.SUCCESS, row);
     }
