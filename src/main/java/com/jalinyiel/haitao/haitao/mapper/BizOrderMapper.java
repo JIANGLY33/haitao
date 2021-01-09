@@ -56,10 +56,19 @@ public interface BizOrderMapper {
     Integer updateStatusToCanceled(@Param("orderIds") List<Long> orderId, int status);
 
     @Update({"<script>",
-            "UPDATE biz_order SET payer = #{payer} ",
+            "UPDATE biz_order SET payer = #{payer}, pay_time = now() ",
+            "WHERE id IN ",
+            "<foreach item='item' index='index' collection='orderIds' open='(' separator=',' close=')'>",
+            "#{item}",
+            "</foreach>",
+            "</script>"})
+    Integer batchSetPayInfo(@Param("orderIds")List<Long> orderIds, String payer);
+
+    @Update({"<script>",
+            "UPDATE biz_order SET payer = #{payer}, pay_time = now() ",
             "WHERE id = #{id}",
             "</script>"})
-    Integer setPayer(Long orderId, String payer);
+    Integer setPayInfo(Long orderId, String payer);
 
     @Select({"<script>",
             "SELECT * FROM biz_order WHERE buyer = #{username} AND status = #{status} AND type != 2",
@@ -67,7 +76,7 @@ public interface BizOrderMapper {
     @ResultMap("bizOrderDO")
     List<BizOrder> findParentByStatusAndUser(String username, Byte status);
 
-    @Select("SELECT * FROM biz_order")
+    @Select("SELECT * FROM biz_order WHERE type != 1")
     @ResultMap("bizOrderDO")
     List<BizOrder> getAllBizOrder();
 }
