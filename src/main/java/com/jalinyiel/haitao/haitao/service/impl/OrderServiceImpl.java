@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
         }
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest();
-        String buyer = request.getSession().getAttribute("username").toString();
+        String buyer = request.getHeader("username");
         LogisOrder logisOrder = generateLogisOrder(buyItemsVo);
         logisOrderMapper.insertLogisOrder(logisOrder);
         BizOrder parentOrder =
@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
                 .sumPrice(item.getPrice())
                 .payPrice(item.getPrice() * item.getRate() / 100)
                 .type(type)
-                .buyer(request.getSession().getAttribute("username").toString())
+                .buyer(request.getHeader("username"))
                 .status(BizOrderConstant.NOT_PAY)
                 .itemId(buyItem.getItemId())
                 .build();
