@@ -53,7 +53,7 @@ public interface ActivityMapper {
 
     @Insert({"<script>",
             "INSERT INTO activity(id, name, description, image, status, start_time, end_time, gmt_create, gmt_modified)",
-            "VALUES (#{id}, #{name}, #{description}, #{image}, #{status}, now(), #{endTime}, now(), now()",
+            "VALUES (#{id}, #{name}, #{description}, #{image}, #{status}, #{startTime}, #{endTime}, now(), now()",
             ")",
             "</script>"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")

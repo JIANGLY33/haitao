@@ -2,6 +2,7 @@ package com.jalinyiel.haitao.haitao.mapper;
 
 import com.jalinyiel.haitao.haitao.model.domain.Carousel;
 import com.jalinyiel.haitao.haitao.model.domain.ItemCategory;
+import com.jalinyiel.haitao.haitao.model.vo.CarouselVo;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -38,6 +39,21 @@ public interface CarouselMapper {
     })
     List<Carousel> findAll();
 
+    @Select("SELECT * FROM carousel")
+    @Results(id = "carouselWithItemDo", value = {
+            @Result(column = "id", property = "id"),
+            @Result(column = "item_id", property = "itemId"),
+            @Result(column = "item_id", property = "item", one = @One(select = "com.jalinyiel.haitao.haitao.mapper.ItemMapper.findById")),
+            @Result(column = "status", property = "status"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "end_time", property = "endTime"),
+            @Result(column = "memo", property = "memo"),
+            @Result(column = "gmt_create", property = "gmtCreate"),
+            @Result(column = "gmt_modified", property = "gmtModified"),
+            @Result(column = "image", property = "image")
+    })
+    List<CarouselVo> findWithItem();
+
     @Select("SELECT * FROM carousel WHERE status = #{status}")
     @ResultMap("carouselDo")
     List<Carousel> findByStatus(Integer status);
@@ -47,7 +63,7 @@ public interface CarouselMapper {
 
     @Insert({"<script>",
             "INSERT INTO carousel(id, item_id, status, start_time, end_time, gmt_create, gmt_modified, memo, image)",
-            "VALUES (#{id}, #{itemId}, #{status}, now(), #{endTime}, now(), now(), #{memo}, #{image}",
+            "VALUES (#{id}, #{itemId}, #{status}, #{startTime}, #{endTime}, now(), now(), #{memo}, #{image}",
             ")",
             "</script>"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")

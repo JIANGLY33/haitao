@@ -4,6 +4,7 @@ import com.jalinyiel.haitao.haitao.common.CommonResultCode;
 import com.jalinyiel.haitao.haitao.common.ResponseResult;
 import com.jalinyiel.haitao.haitao.model.domain.Carousel;
 import com.jalinyiel.haitao.haitao.model.exception.DaoException;
+import com.jalinyiel.haitao.haitao.model.vo.CarouselVo;
 import com.jalinyiel.haitao.haitao.service.CarouselService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,7 @@ public class CarouselController {
     @RequestMapping(value = "/addcarousel",method = RequestMethod.POST)
     ResponseResult addCarousel(@RequestBody Carousel carousel){
         try {
+            System.out.println(carousel);
             Carousel newCarousel = carouselService.add(carousel);
             return ResponseResult.successResult(CommonResultCode.SUCCESS, newCarousel);
         } catch (DaoException daoException) {
@@ -67,4 +69,15 @@ public class CarouselController {
             return ResponseResult.failedResult(CommonResultCode.FAILED);
         }
     }
+
+    @RequestMapping(value = "/getcarouselwithitem",method = RequestMethod.GET)
+    ResponseResult getCarouselWithItem(){
+        try {
+            List<CarouselVo> carouselVos = carouselService.getAllCarouselWithItem();
+            return ResponseResult.successResult(CommonResultCode.SUCCESS, carouselVos);
+        } catch (DaoException daoException) {
+            return ResponseResult.failedResult(CommonResultCode.FAILED);
+        }
+    }
+
 }
