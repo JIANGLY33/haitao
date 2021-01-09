@@ -93,14 +93,14 @@ public class OrderServiceImpl implements OrderService {
         orderIds.add(bizOrder.getId());
         Integer row = 0;
         if (BizOrderConstant.PARENT_SUB == bizOrder.getType()) {
-            row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.TRANSPORTING);
+            row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.TRANSPORTING.intValue());
         }
         if (BizOrderConstant.ONLY_SUB == bizOrder.getType()) {
             return false;
         }
         List<BizOrder> subOrders = bizOrderMapper.findByParentId(orderId);
         subOrders.stream().forEach(b -> orderIds.add(b.getId()));
-        row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.TRANSPORTING);
+        row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.TRANSPORTING.intValue());
         return row > 0;
     }
 
@@ -111,14 +111,14 @@ public class OrderServiceImpl implements OrderService {
         orderIds.add(bizOrder.getId());
         Integer row = 0;
         if (BizOrderConstant.PARENT_SUB == bizOrder.getType()) {
-            row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.CANCELED);
+            row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.CANCELED.intValue());
         }
         if (BizOrderConstant.ONLY_SUB == bizOrder.getType()) {
             return false;
         }
         List<BizOrder> subOrders = bizOrderMapper.findByParentId(orderId);
         subOrders.stream().forEach(b -> orderIds.add(b.getId()));
-        row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.CANCELED);
+        row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.CANCELED.intValue());
         return row > 0;
     }
 
@@ -136,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
         HistoryOrderVo historyOrderVo = new HistoryOrderVo();
         historyOrderVo.setBizOrderId(bizOrder.getId());
         List<OrderItemVo> orderItemVos = new ArrayList<>();
-        if (BizOrderConstant.ONLY_PARENT == bizOrder.getType()) {
+        if (BizOrderConstant.PARENT_SUB == bizOrder.getType()) {
             orderItemVos.add(generateOrderItemVo(bizOrder));
         } else {
             List<BizOrder> bizOrders = bizOrderMapper.findByParentId(bizOrder.getId());

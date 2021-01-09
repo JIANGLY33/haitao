@@ -45,16 +45,16 @@ public class OrderController {
 
     @RequestMapping(value = "cancel", method = RequestMethod.POST)
     public ResponseResult cancel(@RequestParam("orderId") Long orderId) {
-        if (orderService.pay(orderId)) {
+        if (orderService.cancel(orderId)) {
             return ResponseResult.successResult(CommonResultCode.SUCCESS);
         }
         return ResponseResult.failedResult(CommonResultCode.FAILED);
     }
 
-    @RequestMapping("/getOrder")
+    @RequestMapping(value = "/getOrderByStatus", method = RequestMethod.GET)
     public ResponseResult<List<HistoryOrderVo>> getOrdersStatus(@RequestParam("status") Byte status) {
         List<HistoryOrderVo> historyOrderVos = orderService.getHisOrdersByStatus(status);
-        return ResponseResult.failedResult(CommonResultCode.SUCCESS);
+        return ResponseResult.successResult(CommonResultCode.SUCCESS,historyOrderVos);
     }
 
 

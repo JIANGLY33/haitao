@@ -48,12 +48,21 @@ public interface BizOrderMapper {
 
     @Update({"<script>",
             "UPDATE biz_order SET status = #{status} ",
-            "WHERE biz_order IN #{orderId}",
+            "WHERE id IN ",
+            "<foreach item='item' index='index' collection='orderIds' open='(' separator=',' close=')'>",
+            "#{item}",
+            "</foreach>",
             "</script>"})
-    Integer updateStatusToCanceled(List<Long> orderId, Byte status);
+    Integer updateStatusToCanceled(@Param("orderIds") List<Long> orderId, int status);
+
+    @Update({"<script>",
+            "UPDATE biz_order SET payer = #{payer} ",
+            "WHERE id = #{id}",
+            "</script>"})
+    Integer setPayer(Long orderId, String payer);
 
     @Select({"<script>",
-            "SELECT * FROM biz_order WHERE username = #{username} AND status = #{status} AND type != 2",
+            "SELECT * FROM biz_order WHERE buyer = #{username} AND status = #{status} AND type != 2",
             "</script>"})
     @ResultMap("bizOrderDO")
     List<BizOrder> findParentByStatusAndUser(String username, Byte status);
