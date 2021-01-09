@@ -5,11 +5,18 @@ import com.jalinyiel.haitao.haitao.model.exception.DaoException;
 import com.jalinyiel.haitao.haitao.model.vo.LogInVo;
 import com.jalinyiel.haitao.haitao.model.vo.UserInfoVo;
 
+import java.util.List;
+
 public interface UserService {
 
     boolean logIn(LogInVo logInVo) throws DaoException;
 
     User register(LogInVo logInVo) throws DaoException;
 
-    User update(UserInfoVo userInfo) throws DaoException;
+    void update(User user) throws DaoException;
+
+    List<User> getAll() throws DaoException;
+
+    List<UserInfoVo> getByType(Integer type) throws DaoException;
+
 }

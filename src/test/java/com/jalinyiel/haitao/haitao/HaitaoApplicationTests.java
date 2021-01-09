@@ -1,5 +1,6 @@
 package com.jalinyiel.haitao.haitao;
 
+import com.jalinyiel.haitao.haitao.common.FileUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,6 +47,17 @@ class HaitaoApplicationTests {
         user.setDescription("happy new year!");
         Integer res = userMapper.updateUser(user);
         System.out.println(res);
+    }
+
+    @Test
+    void curTimeTest() {
+        String s = FileUtil.getCurTime();
+        System.out.println(s);
+    }
+
+    @Test
+    void stringTest() {
+        System.out.println(FileUtil.picDir.contains("itemqw"));
     }
 
     @Test

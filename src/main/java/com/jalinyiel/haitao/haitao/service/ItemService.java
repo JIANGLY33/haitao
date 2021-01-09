@@ -11,11 +11,11 @@ public interface ItemService {
 
     Item getById(Long id) throws DaoException;
 
-    Item update(Long id) throws DaoException;
+//    Item update(Long id) throws DaoException;
 
-    Long create(Item item) throws DaoException;
+//    Long create(Item item) throws DaoException;
 
-    Long delete(Long id) throws DaoException;
+//    Long delete(Long id) throws DaoException;
 
     List<Item> getByCategory(Long categoryId) throws DaoException;
 
@@ -50,5 +50,11 @@ public interface ItemService {
      * @return
      */
     List<ItemVo> getItemsByActivity(Long activityId) throws DaoException;
+
+    Item update(Item item) throws DaoException;
+
+    Item add(Item item) throws DaoException;
+
+    Item delete(Long id) throws DaoException;
 
 }

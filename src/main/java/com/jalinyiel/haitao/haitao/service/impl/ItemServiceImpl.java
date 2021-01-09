@@ -28,21 +28,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item update(Long id) throws DaoException {
-        return null;
-    }
-
-    @Override
-    public Long create(Item item) throws DaoException {
-        return null;
-    }
-
-    @Override
-    public Long delete(Long id) throws DaoException {
-        return null;
-    }
-
-    @Override
     public List<Item> getByCategory(Long categoryId) throws DaoException {
         return itemMapper.findItemsByCategory(categoryId);
     }
@@ -87,5 +72,27 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemVo> getItemsByActivity(Long activityId) throws DaoException {
         return itemMapper.findItemsByActivity(activityId);
+    }
+
+    @Override
+    public Item update(Item item) throws DaoException {
+        itemMapper.updateItem(item);
+        return itemMapper.findById(item.getId());
+    }
+
+    @Override
+    public Item add(Item item) throws DaoException {
+        itemMapper.createItem(item);
+        return item;
+    }
+
+    @Override
+    public Item delete(Long id) throws DaoException {
+        Item item = itemMapper.findById(id);
+        if(item != null){
+            itemMapper.delItem(id);
+            return item;
+        }
+        return null;
     }
 }

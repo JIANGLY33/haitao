@@ -1,6 +1,7 @@
 package com.jalinyiel.haitao.haitao.mapper;
 
 import com.jalinyiel.haitao.haitao.model.domain.User;
+import com.jalinyiel.haitao.haitao.model.vo.UserInfoVo;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -22,6 +23,21 @@ public interface UserMapper {
             @Result(column = "gmt_modified", property = "gmtModified")
     })
     List<User> findAll();
+
+    /**
+     * 查询所有普通用户
+     * @return
+     */
+    @Select("SELECT * FROM user WHERE type = #{type}")
+    @Results(id = "userInfoDo", value = {
+            @Result(column = "id", property = "id"),
+            @Result(column = "user_name", property = "userName"),
+            @Result(column = "description", property = "description"),
+            @Result(column = "portrait", property = "portrait"),
+            @Result(column = "gender", property = "gender"),
+            @Result(column = "gmt_create", property = "gmtCreate")
+    })
+    List<UserInfoVo> findByType(Integer type);
 
     @Select("SELECT * FROM user WHERE user_name = #{username}")
     @ResultMap("userDo")
@@ -47,6 +63,9 @@ public interface UserMapper {
         public String updateUser(User user) {
             return new SQL(){{
                 UPDATE("user");
+                if (null != user.getUserName()) {
+                    SET("user_name = #{userName}");
+                }
                 if (null != user.getPassword()) {
                     SET("password = #{password}");
                 }

@@ -9,4 +9,12 @@ public interface ItemCategoryService {
 
     List<ItemCategory> getAll() throws DaoException;
 
+    ItemCategory getItemCategory(Long id) throws DaoException;
+
+    ItemCategory update(ItemCategory itemCategory) throws DaoException;
+
+    ItemCategory add(ItemCategory itemCategory) throws DaoException;
+
+    ItemCategory delete(Long id) throws DaoException;
+
 }

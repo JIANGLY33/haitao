@@ -10,7 +10,7 @@ import com.jalinyiel.haitao.haitao.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,7 +27,6 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
-
     }
 
     @Override
@@ -36,9 +35,9 @@ public class UserServiceImpl implements UserService {
         if (null != user)
             throw new DaoException("failed to create repeated user.");
         User newUser = new User();
-        user.setUserName(logInVo.getUsername());
-        user.setPassword(UserUtil.encryBase64(logInVo.getPassword()));
-        userMapper.createUser(user);
+        newUser.setUserName(logInVo.getUsername());
+        newUser.setPassword(UserUtil.encryBase64(logInVo.getPassword()));
+        userMapper.createUser(newUser);
         Long newUserId = newUser.getId();
         if (null == newUserId)
             throw new DaoException("failed to create user.");
@@ -47,7 +46,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(UserInfoVo userInfo) throws DaoException {
-        return null;
+    public void update(User user) throws DaoException {
+        userMapper.updateUser(user);
+    }
+
+    @Override
+    public List<User> getAll() throws DaoException {
+        return userMapper.findAll();
+    }
+
+    @Override
+    public List<UserInfoVo> getByType(Integer type) throws DaoException {
+        return userMapper.findByType(type);
     }
 }
