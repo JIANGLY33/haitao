@@ -34,6 +34,8 @@ public class BuyItemsVo implements Serializable{
     @Data
     public class BuyItem implements Serializable {
 
+        private static final long serialVersionUID = 7027143250452465524L;
+
         private Long itemId;
 
         private String itemName;

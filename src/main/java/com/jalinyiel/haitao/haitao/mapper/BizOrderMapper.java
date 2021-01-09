@@ -4,6 +4,8 @@ import com.jalinyiel.haitao.haitao.model.domain.BizOrder;
 import com.jalinyiel.haitao.haitao.model.domain.LogisOrder;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface BizOrderMapper {
 
@@ -25,6 +27,10 @@ public interface BizOrderMapper {
             @Result(column = "gtm_modified", property = "gmtModified")
     })
     BizOrder findById(Long id);
+
+    @Select("SELECT * FROM biz_order WHERE parent_id = #{parentId}")
+    @ResultMap("bizOrderDO")
+    List<BizOrder> findByParentId(Long parentId);
 
     @Insert({"<script>",
             "INSERT INTO biz_order(id, buyer, status, logis_order_id, pay_price, sum_price,",

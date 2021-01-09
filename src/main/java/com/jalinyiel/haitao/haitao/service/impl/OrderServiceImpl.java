@@ -8,6 +8,7 @@ import com.jalinyiel.haitao.haitao.model.domain.BizOrder;
 import com.jalinyiel.haitao.haitao.model.domain.Item;
 import com.jalinyiel.haitao.haitao.model.domain.LogisOrder;
 import com.jalinyiel.haitao.haitao.model.vo.BuyItemsVo;
+import com.jalinyiel.haitao.haitao.model.vo.OrderItemVo;
 import com.jalinyiel.haitao.haitao.model.vo.OrderVo;
 import com.jalinyiel.haitao.haitao.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -30,16 +33,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     ItemMapper itemMapper;
-
-    @Override
-    public Long createOrder(OrderVo orderVo) {
-        return null;
-    }
-
-    @Override
-    public OrderVo getOrderById(Long id) {
-        return null;
-    }
 
     @Override
     public Long buy(BuyItemsVo buyItemsVo) {
@@ -67,12 +60,26 @@ public class OrderServiceImpl implements OrderService {
                         .build();
         bizOrderMapper.insertBizOrder(parentOrder);
         buyItems.stream().forEach(buyItem -> {
-            BizOrder bizOrder = generateBizOrder(buyItem,BizOrderConstant.ONLY_SUB);
+            BizOrder bizOrder = generateBizOrder(buyItem, BizOrderConstant.ONLY_SUB);
             bizOrder.setLogisOrderId(logisOrder.getId());
             bizOrder.setParentId(parentOrder.getId());
             bizOrderMapper.insertBizOrder(bizOrder);
         });
         return parentOrder.getId();
+    }
+
+    @Override
+    public List<OrderItemVo> getOrderAllItems(Long orderId) {
+        BizOrder bizOrder = bizOrderMapper.findById(orderId);
+        List<OrderItemVo> orderItemVos = new ArrayList<>();
+        if (BizOrderConstant.PARENT_SUB == bizOrder.getType()) {
+            OrderItemVo buyItem = generateOrderItemVo(bizOrder);
+            orderItemVos.add(buyItem);
+            return orderItemVos;
+        }
+        List<BizOrder> subOrders = bizOrderMapper.findByParentId(orderId);
+        orderItemVos = subOrders.stream().map(this::generateOrderItemVo).collect(Collectors.toList());
+        return orderItemVos;
     }
 
     private LogisOrder generateLogisOrder(BuyItemsVo buyItemsVo) {
@@ -88,12 +95,24 @@ public class OrderServiceImpl implements OrderService {
                 .getRequest();
         Item item = itemMapper.findById(buyItem.getItemId());
         return BizOrder.builder()
-                .image(item.getImages())
+                .itemImage(item.getImages())
+                .itemName(item.getName())
                 .sumPrice(item.getPrice())
                 .payPrice(item.getPrice() * item.getRate() / 100)
                 .type(type)
                 .buyer(request.getSession().getAttribute("username").toString())
                 .status(BizOrderConstant.NOT_PAY)
+                .itemId(buyItem.getItemId())
                 .build();
+    }
+
+    private OrderItemVo generateOrderItemVo(BizOrder bizOrder) {
+        Item item = itemMapper.findById(bizOrder.getItemId());
+        return OrderItemVo.builder()
+                .itemName(bizOrder.getItemName())
+                .image(bizOrder.getItemImage())
+                .price(bizOrder.getPayPrice())
+                .build();
+
     }
 }

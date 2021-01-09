@@ -2,13 +2,12 @@ package com.jalinyiel.haitao.haitao.controller;
 
 import com.jalinyiel.haitao.haitao.common.CommonResultCode;
 import com.jalinyiel.haitao.haitao.common.ResponseResult;
+import com.jalinyiel.haitao.haitao.model.domain.BizOrder;
 import com.jalinyiel.haitao.haitao.model.vo.BuyItemsVo;
+import com.jalinyiel.haitao.haitao.model.vo.OrderItemVo;
 import com.jalinyiel.haitao.haitao.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +25,12 @@ public class OrderController {
         }
         Long parentOrderId = orderService.buy(buyItemsVos);
         return ResponseResult.successResult(CommonResultCode.SUCCESS,parentOrderId);
+    }
+
+    @RequestMapping(value = "getOrderItems")
+    public ResponseResult<List<OrderItemVo>> getOrderItems(@RequestParam("orderId") Long orderId) {
+        List<OrderItemVo> buyItems = orderService.getOrderAllItems(orderId);
+        return ResponseResult.successResult(CommonResultCode.SUCCESS,buyItems);
     }
 
 }

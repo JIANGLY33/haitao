@@ -35,7 +35,7 @@ public class BizOrder implements Serializable {
     /**
      * 商品ID
      */
-    private Long item_id;
+    private Long itemId;
 
     /**
      * 对应的物流订单号
@@ -80,7 +80,12 @@ public class BizOrder implements Serializable {
     /**
      * 商品图片
      */
-    private String image;
+    private String itemImage;
+
+    /**
+     * 商品名称
+     */
+    private String itemName;
 
     /**
      * 父订单号
