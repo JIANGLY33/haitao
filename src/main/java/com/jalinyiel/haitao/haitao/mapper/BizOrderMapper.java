@@ -66,4 +66,8 @@ public interface BizOrderMapper {
             "</script>"})
     @ResultMap("bizOrderDO")
     List<BizOrder> findParentByStatusAndUser(String username, Byte status);
+
+    @Select("SELECT * FROM biz_order")
+    @ResultMap("bizOrderDO")
+    List<BizOrder> getAllBizOrder();
 }

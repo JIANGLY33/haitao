@@ -57,6 +57,10 @@ public class OrderController {
         return ResponseResult.successResult(CommonResultCode.SUCCESS,historyOrderVos);
     }
 
-
+    @RequestMapping(value = "/getAllOrders", method = RequestMethod.GET)
+    public ResponseResult<List<BizOrder>> getAllOrders(){
+        List<BizOrder> bizOrders = orderService.getAllOrders();
+        return ResponseResult.successResult(CommonResultCode.SUCCESS, bizOrders);
+    }
 
 }

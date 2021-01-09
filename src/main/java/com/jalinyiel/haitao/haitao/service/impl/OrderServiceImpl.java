@@ -179,4 +179,9 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
     }
+
+    @Override
+    public List<BizOrder> getAllOrders() {
+        return bizOrderMapper.getAllBizOrder();
+    }
 }

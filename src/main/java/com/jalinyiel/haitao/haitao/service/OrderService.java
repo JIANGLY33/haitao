@@ -19,4 +19,6 @@ public interface OrderService {
     Boolean cancel(Long orderId);
 
     List<HistoryOrderVo> getHisOrdersByStatus(Byte status);
+
+    List<BizOrder> getAllOrders();
 }
