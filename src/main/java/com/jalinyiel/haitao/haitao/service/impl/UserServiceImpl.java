@@ -35,9 +35,9 @@ public class UserServiceImpl implements UserService {
         if (null != user)
             throw new DaoException("failed to create repeated user.");
         User newUser = new User();
-        user.setUserName(logInVo.getUsername());
-        user.setPassword(UserUtil.encryBase64(logInVo.getPassword()));
-        userMapper.createUser(user);
+        newUser.setUserName(logInVo.getUsername());
+        newUser.setPassword(UserUtil.encryBase64(logInVo.getPassword()));
+        userMapper.createUser(newUser);
         Long newUserId = newUser.getId();
         if (null == newUserId)
             throw new DaoException("failed to create user.");
