@@ -111,8 +111,8 @@ public class ItemController {
         }
     }
 
-    @RequestMapping(value = "/updateitem/{id}", method = RequestMethod.PUT)
-    ResponseResult updateItem(Item item) {
+    @RequestMapping(value = "/updateitem", method = RequestMethod.PUT)
+    ResponseResult updateItem(@RequestBody Item item) {
         try {
             Item newItem = itemService.update(item);
             return ResponseResult.successResult(CommonResultCode.SUCCESS, newItem);

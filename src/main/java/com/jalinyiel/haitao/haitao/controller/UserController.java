@@ -36,6 +36,7 @@ public class UserController {
                     .getRequest();
             String username = logInVo.getUsername();
             String logInTag = UserUtil.getLogInTag(username);
+            request.getSession().setAttribute("username",username);
             request.getSession().setAttribute(username,logInTag);
             return ResponseResult.successResult(CommonResultCode.SUCCESS, logInTag);
         } catch (DaoException daoException) {
@@ -87,8 +88,8 @@ public class UserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "/updateuser/{id}", method = RequestMethod.PUT)
-    ResponseResult updateUser(User user){
+    @RequestMapping(value = "/updateuser", method = RequestMethod.PUT)
+    ResponseResult updateUser(@RequestBody User user){
         try {
             userService.update(user);
             System.out.println(user);

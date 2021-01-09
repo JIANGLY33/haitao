@@ -46,8 +46,8 @@ public class ItemCategoryController {
         }
     }
 
-    @RequestMapping(value = "/updatecategory/{id}", method = RequestMethod.PUT)
-    ResponseResult updateItemCategory(ItemCategory itemCategory) {
+    @RequestMapping(value = "/updatecategory", method = RequestMethod.PUT)
+    ResponseResult updateItemCategory(@RequestBody ItemCategory itemCategory) {
         try {
             ItemCategory newItemCategory = itemCategoryService.update(itemCategory);
             return ResponseResult.successResult(CommonResultCode.SUCCESS, newItemCategory);
