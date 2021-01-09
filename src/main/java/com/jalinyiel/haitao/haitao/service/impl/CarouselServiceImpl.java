@@ -3,6 +3,7 @@ package com.jalinyiel.haitao.haitao.service.impl;
 import com.jalinyiel.haitao.haitao.mapper.CarouselMapper;
 import com.jalinyiel.haitao.haitao.model.domain.Carousel;
 import com.jalinyiel.haitao.haitao.model.exception.DaoException;
+import com.jalinyiel.haitao.haitao.model.vo.CarouselVo;
 import com.jalinyiel.haitao.haitao.service.CarouselService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,10 @@ public class CarouselServiceImpl implements CarouselService {
             return carousel;
         }
         return null;
+    }
+
+    @Override
+    public List<CarouselVo> getAllCarouselWithItem() throws DaoException {
+        return carouselMapper.findWithItem();
     }
 }

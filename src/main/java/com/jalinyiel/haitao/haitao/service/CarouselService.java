@@ -3,6 +3,7 @@ package com.jalinyiel.haitao.haitao.service;
 import com.jalinyiel.haitao.haitao.model.domain.Activity;
 import com.jalinyiel.haitao.haitao.model.domain.Carousel;
 import com.jalinyiel.haitao.haitao.model.exception.DaoException;
+import com.jalinyiel.haitao.haitao.model.vo.CarouselVo;
 
 import java.util.List;
 
@@ -18,5 +19,6 @@ public interface CarouselService {
 
     Carousel delete(Long id) throws DaoException;
 
+    List<CarouselVo> getAllCarouselWithItem() throws DaoException;
 
 }
