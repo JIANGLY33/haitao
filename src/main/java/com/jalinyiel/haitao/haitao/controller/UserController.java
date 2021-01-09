@@ -26,7 +26,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     ResponseResult<LogInResponse> login(@RequestBody LogInVo logInVo) {
         try {
             boolean success = userService.logIn(logInVo);
@@ -96,7 +96,7 @@ public class UserController {
             System.out.println(user);
             return ResponseResult.successResult(CommonResultCode.SUCCESS);
         } catch (DaoException daoException) {
-            return ResponseResult.failedResult(CommonResultCode.FAILED);
+            return ResponseResult.failedResult(CommonResultCode.FAILED, daoException.getLocalizedMessage());
         }
     }
 
