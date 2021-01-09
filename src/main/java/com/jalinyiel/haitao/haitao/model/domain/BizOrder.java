@@ -1,5 +1,6 @@
 package com.jalinyiel.haitao.haitao.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 
@@ -60,11 +61,13 @@ public class BizOrder implements Serializable {
     /**
      * 支付时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date payTime;
 
     /**
      * 交易结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
@@ -100,10 +103,12 @@ public class BizOrder implements Serializable {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtCreate;
 
     /**
      * 修改时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtModified;
 }
