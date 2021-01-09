@@ -73,10 +73,10 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/getbytype/{type}", method = RequestMethod.GET)
-    ResponseResult getGenericUsers(@PathVariable("type") Integer type){
+    @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
+    ResponseResult getAllUsers(){
         try {
-            List<UserInfoVo> users = userService.getByType(type);
+            List<UserInfoVo> users = userService.getAllUser();
             return ResponseResult.successResult(CommonResultCode.SUCCESS, users);
         } catch (DaoException daoException) {
             return ResponseResult.failedResult(CommonResultCode.FAILED);

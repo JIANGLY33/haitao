@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserInfoVo> getByType(Integer type) throws DaoException {
-        return userMapper.findByType(type);
+    public List<UserInfoVo> getAllUser() throws DaoException {
+        return userMapper.findAllUser();
     }
 }

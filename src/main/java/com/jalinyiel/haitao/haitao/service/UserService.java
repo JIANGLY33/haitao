@@ -17,6 +17,6 @@ public interface UserService {
 
     List<User> getAll() throws DaoException;
 
-    List<UserInfoVo> getByType(Integer type) throws DaoException;
+    List<UserInfoVo> getAllUser() throws DaoException;
 
 }

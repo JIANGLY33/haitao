@@ -28,7 +28,7 @@ public interface UserMapper {
      * 查询所有普通用户
      * @return
      */
-    @Select("SELECT * FROM user WHERE type = #{type}")
+    @Select("SELECT * FROM user")
     @Results(id = "userInfoDo", value = {
             @Result(column = "id", property = "id"),
             @Result(column = "user_name", property = "userName"),
@@ -37,7 +37,7 @@ public interface UserMapper {
             @Result(column = "gender", property = "gender"),
             @Result(column = "gmt_create", property = "gmtCreate")
     })
-    List<UserInfoVo> findByType(Integer type);
+    List<UserInfoVo> findAllUser();
 
     @Select("SELECT * FROM user WHERE user_name = #{username}")
     @ResultMap("userDo")
