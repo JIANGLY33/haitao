@@ -12,23 +12,23 @@ public interface BizOrderMapper {
     @Select("SELECT * FROM biz_order WHERE id = #{id}")
     @Results(id = "bizOrderDO", value = {
             @Result(column = "id", property = "id"),
-            @Result(column = "payer", property = "payer"),
             @Result(column = "buyer", property = "buyer"),
             @Result(column = "status", property = "status"),
-            @Result(column = "logis_order_id", property = "logisOrderId"),
             @Result(column = "item_id", property = "itemId"),
+            @Result(column = "logis_order_id", property = "logisOrderId"),
             @Result(column = "pay_price", property = "payPrice"),
             @Result(column = "sum_price", property = "sumPrice"),
             @Result(column = "discount", property = "discount"),
             @Result(column = "pay_time", property = "payTime"),
             @Result(column = "end_time", property = "endTime"),
+            @Result(column = "payer", property = "payer"),
             @Result(column = "memo", property = "memo"),
-            @Result(column = "type", property = "type"),
-            @Result(column = "parent_id", property = "parentId"),
-            @Result(column = "item_image", property = "itemImage", javaType = String.class),
+            @Result(column = "item_image", property = "itemImage"),
             @Result(column = "item_name", property = "itemName"),
+            @Result(column = "parent_id", property = "parentId"),
+            @Result(column = "type", property = "type"),
             @Result(column = "gmt_create", property = "gmtCreate"),
-            @Result(column = "gtm_modified", property = "gmtModified")
+            @Result(column = "gmt_modified", property = "gmtModified"),
     })
     BizOrder findById(Long id);
 
