@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
@@ -46,6 +47,11 @@ class HaitaoApplicationTests {
     void curTimeTest() {
         String s = FileUtil.getCurTime();
         System.out.println(s);
+    }
+
+    @Test
+    void stringTest() {
+        System.out.println(FileUtil.picDir.contains("itemqw"));
     }
 
 }
