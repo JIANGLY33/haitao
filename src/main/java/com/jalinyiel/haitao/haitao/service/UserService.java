@@ -3,6 +3,7 @@ package com.jalinyiel.haitao.haitao.service;
 import com.jalinyiel.haitao.haitao.model.domain.User;
 import com.jalinyiel.haitao.haitao.model.exception.DaoException;
 import com.jalinyiel.haitao.haitao.model.vo.LogInVo;
+import com.jalinyiel.haitao.haitao.model.vo.UserInfoVo;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ public interface UserService {
     void update(User user) throws DaoException;
 
     List<User> getAll() throws DaoException;
+
+    List<UserInfoVo> getByType(Integer type) throws DaoException;
 
 }

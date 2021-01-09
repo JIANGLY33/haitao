@@ -74,7 +74,8 @@ public class ActivityController {
     ResponseResult delActivity(@PathVariable("id") Long id){
         try {
             Activity activity = activityService.delete(id);
-            return ResponseResult.successResult(CommonResultCode.SUCCESS, activity);
+            if(activity != null) return ResponseResult.successResult(CommonResultCode.SUCCESS, activity);
+            else return ResponseResult.failedResult(CommonResultCode.FAILED, "not exist");
         } catch (DaoException daoException) {
             return ResponseResult.failedResult(CommonResultCode.FAILED);
         }

@@ -72,6 +72,16 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/getbytype/{type}", method = RequestMethod.GET)
+    ResponseResult getGenericUsers(@PathVariable("type") Integer type){
+        try {
+            List<UserInfoVo> users = userService.getByType(type);
+            return ResponseResult.successResult(CommonResultCode.SUCCESS, users);
+        } catch (DaoException daoException) {
+            return ResponseResult.failedResult(CommonResultCode.FAILED);
+        }
+    }
+
     /**
      * 更新用户
      * @param user

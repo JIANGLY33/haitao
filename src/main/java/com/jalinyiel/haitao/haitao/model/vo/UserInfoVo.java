@@ -1,7 +1,12 @@
 package com.jalinyiel.haitao.haitao.model.vo;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
+import java.io.Serializable;
+import java.util.Date;
+
+@Data
 public class UserInfoVo implements Serializable {
 
     private static final long serialVersionUID = 2252411577938238264L;
@@ -30,5 +35,11 @@ public class UserInfoVo implements Serializable {
      * 性别
      */
     private Byte gender;
+
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date gmtCreate;
 
 }
