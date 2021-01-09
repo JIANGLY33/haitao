@@ -16,5 +16,7 @@ public class BizOrderConstant {
 
     public static byte FINISHED = 2;
 
+    public static byte CANCELED = 3;
+
 
 }

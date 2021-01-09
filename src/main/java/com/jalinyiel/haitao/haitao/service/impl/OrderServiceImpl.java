@@ -8,6 +8,7 @@ import com.jalinyiel.haitao.haitao.model.domain.BizOrder;
 import com.jalinyiel.haitao.haitao.model.domain.Item;
 import com.jalinyiel.haitao.haitao.model.domain.LogisOrder;
 import com.jalinyiel.haitao.haitao.model.vo.BuyItemsVo;
+import com.jalinyiel.haitao.haitao.model.vo.HistoryOrderVo;
 import com.jalinyiel.haitao.haitao.model.vo.OrderItemVo;
 import com.jalinyiel.haitao.haitao.model.vo.OrderVo;
 import com.jalinyiel.haitao.haitao.service.OrderService;
@@ -83,6 +84,66 @@ public class OrderServiceImpl implements OrderService {
         List<BizOrder> subOrders = bizOrderMapper.findByParentId(orderId);
         orderItemVos = subOrders.stream().map(this::generateOrderItemVo).collect(Collectors.toList());
         return orderItemVos;
+    }
+
+    @Override
+    public Boolean pay(Long orderId) {
+        BizOrder bizOrder = bizOrderMapper.findById(orderId);
+        List<Long> orderIds = new ArrayList<>();
+        orderIds.add(bizOrder.getId());
+        Integer row = 0;
+        if (BizOrderConstant.PARENT_SUB == bizOrder.getType()) {
+            row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.TRANSPORTING);
+        }
+        if (BizOrderConstant.ONLY_SUB == bizOrder.getType()) {
+            return false;
+        }
+        List<BizOrder> subOrders = bizOrderMapper.findByParentId(orderId);
+        subOrders.stream().forEach(b -> orderIds.add(b.getId()));
+        row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.TRANSPORTING);
+        return row > 0;
+    }
+
+    @Override
+    public Boolean cancel(Long orderId) {
+        BizOrder bizOrder = bizOrderMapper.findById(orderId);
+        List<Long> orderIds = new ArrayList<>();
+        orderIds.add(bizOrder.getId());
+        Integer row = 0;
+        if (BizOrderConstant.PARENT_SUB == bizOrder.getType()) {
+            row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.CANCELED);
+        }
+        if (BizOrderConstant.ONLY_SUB == bizOrder.getType()) {
+            return false;
+        }
+        List<BizOrder> subOrders = bizOrderMapper.findByParentId(orderId);
+        subOrders.stream().forEach(b -> orderIds.add(b.getId()));
+        row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.CANCELED);
+        return row > 0;
+    }
+
+    @Override
+    public List<HistoryOrderVo> getHisOrdersByStatus(Byte status) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest();
+        String username = request.getHeader("username");
+        List<BizOrder> parentBizOrders = bizOrderMapper.findParentByStatusAndUser(username,status);
+        List<HistoryOrderVo> historyOrderVos = parentBizOrders.stream().map(this::generateHistoryOrderVo).collect(Collectors.toList());
+        return historyOrderVos;
+    }
+
+    private HistoryOrderVo generateHistoryOrderVo(BizOrder bizOrder) {
+        HistoryOrderVo historyOrderVo = new HistoryOrderVo();
+        historyOrderVo.setBizOrderId(bizOrder.getId());
+        List<OrderItemVo> orderItemVos = new ArrayList<>();
+        if (BizOrderConstant.ONLY_PARENT == bizOrder.getType()) {
+            orderItemVos.add(generateOrderItemVo(bizOrder));
+        } else {
+            List<BizOrder> bizOrders = bizOrderMapper.findByParentId(bizOrder.getId());
+            bizOrders.stream().forEach(b -> orderItemVos.add(generateOrderItemVo(b)));
+        }
+        historyOrderVo.setBuyItems(orderItemVos);
+        return historyOrderVo;
     }
 
     private LogisOrder generateLogisOrder(BuyItemsVo buyItemsVo) {

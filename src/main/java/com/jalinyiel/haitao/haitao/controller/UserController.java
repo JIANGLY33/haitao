@@ -7,6 +7,7 @@ import com.jalinyiel.haitao.haitao.mapper.UserMapper;
 import com.jalinyiel.haitao.haitao.model.domain.User;
 import com.jalinyiel.haitao.haitao.model.exception.DaoException;
 import com.jalinyiel.haitao.haitao.model.vo.ActivityItemVo;
+import com.jalinyiel.haitao.haitao.model.vo.LogInResponse;
 import com.jalinyiel.haitao.haitao.model.vo.LogInVo;
 import com.jalinyiel.haitao.haitao.model.vo.UserInfoVo;
 import com.jalinyiel.haitao.haitao.service.UserService;
@@ -26,7 +27,7 @@ public class UserController {
     UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    ResponseResult<String> login(@RequestBody LogInVo logInVo) {
+    ResponseResult<LogInResponse> login(@RequestBody LogInVo logInVo) {
         try {
             boolean success = userService.logIn(logInVo);
             if (!success) {
@@ -38,7 +39,7 @@ public class UserController {
             String logInTag = UserUtil.getLogInTag(username);
             request.getSession().setAttribute("username",username);
             request.getSession().setAttribute(username,logInTag);
-            return ResponseResult.successResult(CommonResultCode.SUCCESS, logInTag);
+            return ResponseResult.successResult(CommonResultCode.SUCCESS, LogInResponse.builder().logInTag(logInTag).username(username).build());
         } catch (DaoException daoException) {
             return ResponseResult.failedResult(CommonResultCode.FAILED);
         }

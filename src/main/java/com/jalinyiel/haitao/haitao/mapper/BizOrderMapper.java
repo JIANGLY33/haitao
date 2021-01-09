@@ -45,4 +45,16 @@ public interface BizOrderMapper {
             "</script>"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     Long insertBizOrder(BizOrder bizOrder);
+
+    @Update({"<script>",
+            "UPDATE biz_order SET status = #{status} ",
+            "WHERE biz_order IN #{orderId}",
+            "</script>"})
+    Integer updateStatusToCanceled(List<Long> orderId, Byte status);
+
+    @Select({"<script>",
+            "SELECT * FROM biz_order WHERE username = #{username} AND status = #{status} AND type != 2",
+            "</script>"})
+    @ResultMap("bizOrderDO")
+    List<BizOrder> findParentByStatusAndUser(String username, Byte status);
 }
