@@ -77,6 +77,9 @@ public class OrderServiceImpl implements OrderService {
             orderItemVos.add(buyItem);
             return orderItemVos;
         }
+        if (BizOrderConstant.ONLY_SUB == bizOrder.getType()) {
+            return new ArrayList<>();
+        }
         List<BizOrder> subOrders = bizOrderMapper.findByParentId(orderId);
         orderItemVos = subOrders.stream().map(this::generateOrderItemVo).collect(Collectors.toList());
         return orderItemVos;
