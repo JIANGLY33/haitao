@@ -13,6 +13,4 @@ public class LogInVo implements Serializable {
 
     private String password;
 
-    public LogInVo(String username, String password) {
-    }
 }
