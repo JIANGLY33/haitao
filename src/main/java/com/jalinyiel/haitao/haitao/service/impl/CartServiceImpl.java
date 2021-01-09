@@ -100,6 +100,9 @@ public class CartServiceImpl implements CartService {
             int index = -1;
             for (int i = 0; i < cartItemVos.size(); i++) {
                 if (cartItemVos.get(i).getItemId().equals(buyItem.getItemId())) {
+                    cartItemVo.setPrice(cacheCartItems.get(i).getPrice());
+                    cartItemVo.setItemName(cacheCartItems.get(i).getItemName());
+                    cartItemVo.setImage(cacheCartItems.get(i).getImage());
                     cartItemVo.setAmount(cacheCartItems.get(i).getAmount());
                     index = i;
                     break;
