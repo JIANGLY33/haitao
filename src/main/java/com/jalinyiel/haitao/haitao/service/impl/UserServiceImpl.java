@@ -49,6 +49,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) throws DaoException {
+        User isExistUser = userMapper.findByUsername(user.getUserName());
+        if (isExistUser != null && !isExistUser.getId().equals(user.getId()))
+            throw new DaoException("failed to update repeated user.");
+        if(null != user.getPassword())
+            user.setPassword(UserUtil.encryBase64(user.getPassword()));
         userMapper.updateUser(user);
     }
 

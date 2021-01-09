@@ -25,7 +25,17 @@ public interface CarouselMapper {
     Carousel findById(Long id);
 
     @Select("SELECT * FROM carousel")
-    @ResultMap("carouselDo")
+    @Results(id = "carouselItemNameDo", value = {
+            @Result(column = "id", property = "id"),
+            @Result(column = "item_id", property = "itemId"),
+            @Result(column = "status", property = "status"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "end_time", property = "endTime"),
+            @Result(column = "memo", property = "memo"),
+            @Result(column = "gmt_create", property = "gmtCreate"),
+            @Result(column = "gmt_modified", property = "gmtModified"),
+            @Result(column = "image", property = "image")
+    })
     List<Carousel> findAll();
 
     @Select("SELECT * FROM carousel WHERE status = #{status}")
@@ -50,10 +60,7 @@ public interface CarouselMapper {
         public String updateCarousel(Carousel carousel) {
             return new SQL(){{
                 UPDATE("carousel");
-                if (null != carousel.getId()) {
-                    SET("id = #{id}");
-                }
-                if (null != carousel.getImage()) {
+                if (null != carousel.getItemId()) {
                     SET("item_id = #{itemId}");
                 }
                 if (null != carousel.getStatus()) {

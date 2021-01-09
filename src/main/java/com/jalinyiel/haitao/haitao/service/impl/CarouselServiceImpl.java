@@ -27,7 +27,7 @@ public class CarouselServiceImpl implements CarouselService {
 
     @Override
     public Carousel update(Carousel carousel) throws DaoException {
-        carouselMapper.createCarousel(carousel);
+        carouselMapper.updateCarousel(carousel);
         return carouselMapper.findById(carousel.getId());
     }
 
