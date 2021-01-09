@@ -31,5 +31,23 @@ public class ActivivtyItemServiceImpl implements ActivityItemService {
         return activityItemMapper.findByActivity(activityId);
     }
 
+    @Override
+    public ActivityItem add(ActivityItem activityItem) throws DaoException {
+        ActivityItem isExist = activityItemMapper.findByItemActivity(activityItem.getItemId(), activityItem.getActivityId());
+        if(isExist == null){
+            activityItemMapper.createActivityItem(activityItem);
+            return activityItem;
+        }
+        return null;
+    }
 
+    @Override
+    public ActivityItem delete(Long itemId, Long activityId) throws DaoException {
+        ActivityItem activityItem = activityItemMapper.findByItemActivity(itemId, activityId);
+        if(activityItem != null){
+            activityItemMapper.delActivityItem(itemId, activityId);
+            return activityItem;
+        }
+        return null;
+    }
 }

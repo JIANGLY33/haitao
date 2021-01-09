@@ -11,4 +11,8 @@ public interface ActivityItemService {
 
     List<ActivityItem> getByActivity(Long activityId) throws DaoException;
 
+    ActivityItem add(ActivityItem activityItem) throws DaoException;
+
+    ActivityItem delete(Long itemId, Long activityId) throws DaoException;
+
 }

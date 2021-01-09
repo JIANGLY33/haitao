@@ -7,6 +7,7 @@ import com.jalinyiel.haitao.haitao.model.exception.DaoException;
 import com.jalinyiel.haitao.haitao.model.vo.CategoryNumVo;
 import com.jalinyiel.haitao.haitao.model.vo.ItemVo;
 import com.jalinyiel.haitao.haitao.service.ItemService;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * cz
  */
 @CrossOrigin
-@RestController("iterm")
+@RestController("item")
 public class ItemController {
 
     @Autowired
@@ -105,6 +106,37 @@ public class ItemController {
         try {
             List<ItemVo> items = itemService.getItemsByActivity(activityId);
             return ResponseResult.successResult(CommonResultCode.SUCCESS, items);
+        } catch (DaoException daoException) {
+            return ResponseResult.failedResult(CommonResultCode.FAILED);
+        }
+    }
+
+    @RequestMapping(value = "/updateitem/{id}", method = RequestMethod.PUT)
+    ResponseResult updateItem(Item item) {
+        try {
+            Item newItem = itemService.update(item);
+            return ResponseResult.successResult(CommonResultCode.SUCCESS, newItem);
+        } catch (DaoException daoException) {
+            return ResponseResult.failedResult(CommonResultCode.FAILED);
+        }
+    }
+
+    @RequestMapping(value = "/additem", method = RequestMethod.POST)
+    ResponseResult addItem(@RequestBody Item item) {
+        try {
+            Item newItem = itemService.add(item);
+            return ResponseResult.successResult(CommonResultCode.SUCCESS, newItem);
+        } catch (DaoException daoException) {
+            return ResponseResult.failedResult(CommonResultCode.FAILED);
+        }
+    }
+
+    @RequestMapping(value = "/delitem/{id}", method = RequestMethod.DELETE)
+    ResponseResult delItem(@PathVariable("id") Long id) {
+        try {
+            Item item = itemService.delete(id);
+            if(item != null) return ResponseResult.successResult(CommonResultCode.SUCCESS, item);
+            else return ResponseResult.failedResult(CommonResultCode.FAILED, "not exist");
         } catch (DaoException daoException) {
             return ResponseResult.failedResult(CommonResultCode.FAILED);
         }

@@ -1,5 +1,6 @@
 package com.jalinyiel.haitao.haitao;
 
+import com.jalinyiel.haitao.haitao.common.FileUtil;
 import com.jalinyiel.haitao.haitao.mapper.UserMapper;
 import com.jalinyiel.haitao.haitao.model.domain.User;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,12 @@ class HaitaoApplicationTests {
         user.setDescription("happy new year!");
         Integer res = userMapper.updateUser(user);
         System.out.println(res);
+    }
+
+    @Test
+    void curTimeTest() {
+        String s = FileUtil.getCurTime();
+        System.out.println(s);
     }
 
 }

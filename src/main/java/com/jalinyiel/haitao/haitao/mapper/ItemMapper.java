@@ -1,9 +1,11 @@
 package com.jalinyiel.haitao.haitao.mapper;
 
 import com.jalinyiel.haitao.haitao.model.domain.Item;
+import com.jalinyiel.haitao.haitao.model.domain.ItemCategory;
 import com.jalinyiel.haitao.haitao.model.vo.CategoryNumVo;
 import com.jalinyiel.haitao.haitao.model.vo.ItemVo;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.jdbc.SQL;
 
 import java.util.List;
 
@@ -150,5 +152,55 @@ public interface ItemMapper {
     @Select("SELECT * FROM item WHERE id = #{id}")
     @ResultMap("itemDo")
     Item findByAcvivity(Long id);
+
+    @Delete("DELETE FROM item WHERE id = #{id}")
+    Integer delItem(Long id);
+
+    @Insert({"<script>",
+            "INSERT INTO item(id, name, description, category_id, images, price, status, rate, gmt_create, gmt_modified, number) ",
+            "VALUES (#{id}, #{name}, #{description}, #{categoryId}, #{images}, #{price}, #{status}, #{rate}, now(), now(), #{number}",
+            ")",
+            "</script>"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    Long createItem(Item item);
+
+    @UpdateProvider(type = ItemProvider.class, method = "updateItem")
+    Integer updateItem(Item item);
+
+    class ItemProvider {
+        public String updateItem(Item item) {
+            return new SQL(){{
+                UPDATE("item");
+                if (null != item.getName()) {
+                    SET("name = #{name}");
+                }
+                if (null != item.getDescription()) {
+                    SET("description = #{description}");
+                }
+                if (null != item.getCategoryId()) {
+                    SET("category_id = #{categoryId}");
+                }
+                if (null != item.getImages()) {
+                    SET("images = #{images}");
+                }
+                if (null != item.getPrice()) {
+                    SET("price = #{price}");
+                }
+                if (null != item.getStatus()) {
+                    SET("status = #{status}");
+                }
+                if (null != item.getRate()) {
+                    SET("rate = #{rate}");
+                }
+                if (null != item.getNumber()) {
+                    SET("number = #{number}");
+                }
+                SET("gmt_modified = now()");
+                WHERE("id = #{id}");
+            }
+            }.toString();
+        }
+    }
+
 
 }

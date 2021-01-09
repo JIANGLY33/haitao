@@ -22,11 +22,35 @@ public class ActivityServiceImpl implements ActivityService {
         return activityMapper.findAll();
     }
 
+    @Override
+    public Activity getById(Long id) throws DaoException {
+        return activityMapper.findById(id);
+    }
+
     /**
      * 查询所有活动的所有商品(嵌套)
      */
     @Override
     public List<ActivityItemVo> getActivityAllItem() throws DaoException {
         return activityMapper.findActivityAllItem();
+    }
+
+    @Override
+    public Activity update(Activity activity) throws DaoException {
+        activityMapper.updateActivity(activity);
+        return activityMapper.findById(activity.getId());
+    }
+
+    @Override
+    public Activity add(Activity activity) throws DaoException {
+        activityMapper.createActivity(activity);
+        return activity;
+    }
+
+    @Override
+    public Activity delete(Long id) throws DaoException {
+        Activity activity = activityMapper.findById(id);
+        activityMapper.delActivity(id);
+        return activity;
     }
 }
