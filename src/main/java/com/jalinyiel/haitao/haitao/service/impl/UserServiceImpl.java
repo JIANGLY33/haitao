@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.findByUsername(logInVo.getUsername());
         if (null == user)
             throw new DaoException("failed to find user.");
-        if (user.getUserName().equals(logInVo.getUsername()) && UserUtil.encryBase64(user.getPassword()).equals(logInVo.getPassword())) {
+        if (user.getUserName().equals(logInVo.getUsername()) && user.getPassword().equals(UserUtil.encryBase64(logInVo.getPassword()))) {
             return true;
         }
         return false;
