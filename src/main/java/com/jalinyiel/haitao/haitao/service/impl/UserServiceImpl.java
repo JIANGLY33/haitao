@@ -2,6 +2,7 @@ package com.jalinyiel.haitao.haitao.service.impl;
 
 import com.jalinyiel.haitao.haitao.common.UserUtil;
 import com.jalinyiel.haitao.haitao.mapper.UserMapper;
+import com.jalinyiel.haitao.haitao.model.constant.UserConstant;
 import com.jalinyiel.haitao.haitao.model.domain.User;
 import com.jalinyiel.haitao.haitao.model.exception.DaoException;
 import com.jalinyiel.haitao.haitao.model.vo.LogInVo;
@@ -23,7 +24,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.findByUsername(logInVo.getUsername());
         if (null == user)
             throw new DaoException("failed to find user.");
-        if (user.getUserName().equals(logInVo.getUsername()) && user.getPassword().equals(logInVo.getPassword())) {
+        if (user.getUserName().equals(logInVo.getUsername()) && UserUtil.encryBase64(user.getPassword()).equals(logInVo.getPassword())) {
             return true;
         }
         return false;
@@ -37,6 +38,7 @@ public class UserServiceImpl implements UserService {
         User newUser = new User();
         newUser.setUserName(logInVo.getUsername());
         newUser.setPassword(UserUtil.encryBase64(logInVo.getPassword()));
+        newUser.setType(UserConstant.NORMAL_USER);
         userMapper.createUser(newUser);
         Long newUserId = newUser.getId();
         if (null == newUserId)
