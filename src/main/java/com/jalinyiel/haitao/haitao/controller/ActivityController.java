@@ -50,7 +50,7 @@ public class ActivityController {
         }
     }
 
-    @RequestMapping(value = "/updateactivity/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updateactivity", method = RequestMethod.PUT)
     ResponseResult updateActivity(@RequestBody Activity activity) {
         try {
             Activity newActivity = activityService.update(activity);

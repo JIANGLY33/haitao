@@ -15,7 +15,7 @@ public interface CarouselMapper {
             @Result(column = "id", property = "id"),
             @Result(column = "item_id", property = "itemId"),
             @Result(column = "status", property = "status"),
-            @Result(column = "start_time", property = "startTIme"),
+            @Result(column = "start_time", property = "startTime"),
             @Result(column = "end_time", property = "endTime"),
             @Result(column = "memo", property = "memo"),
             @Result(column = "gmt_create", property = "gmtCreate"),

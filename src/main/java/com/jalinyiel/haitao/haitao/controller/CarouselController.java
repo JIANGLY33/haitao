@@ -37,8 +37,8 @@ public class CarouselController {
         }
     }
 
-    @RequestMapping(value = "/updatecarousel/{id}",method = RequestMethod.PUT)
-    ResponseResult updateCarousel(Carousel carousel) {
+    @RequestMapping(value = "/updatecarousel",method = RequestMethod.PUT)
+    ResponseResult updateCarousel(@RequestBody Carousel carousel) {
         try {
             Carousel newCarousel = carouselService.update(carousel);
             return ResponseResult.successResult(CommonResultCode.SUCCESS, newCarousel);

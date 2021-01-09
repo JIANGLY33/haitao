@@ -88,8 +88,8 @@ public class UserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "/updateuser/{id}", method = RequestMethod.PUT)
-    ResponseResult updateUser(User user){
+    @RequestMapping(value = "/updateuser", method = RequestMethod.PUT)
+    ResponseResult updateUser(@RequestBody User user){
         try {
             userService.update(user);
             System.out.println(user);
