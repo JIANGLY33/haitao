@@ -38,9 +38,9 @@ public interface ItemMapper {
             "LEFT JOIN item_category ic",
             "ON i.category_id = ic.id",
             "WHERE i.id IN (",
-            "SELECT item_id FROM activity_item WHERE activity_id = 1)",
+            "SELECT item_id FROM activity_item WHERE activity_id = #{activityId})",
             "</script>"})
-    @Results({
+    @Results(id = "activityAllItemDo", value = {
             @Result(column = "id", property = "id"),
             @Result(column = "name", property = "name"),
             @Result(column = "description", property = "description"),
