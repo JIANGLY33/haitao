@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -92,14 +91,22 @@ public class OrderServiceImpl implements OrderService {
         List<Long> orderIds = new ArrayList<>();
         orderIds.add(bizOrder.getId());
         Integer row = 0;
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest();
+        String username = request.getHeader("username");
         if (BizOrderConstant.PARENT_SUB == bizOrder.getType()) {
             row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.TRANSPORTING.intValue());
+            bizOrderMapper.setPayInfo(bizOrder.getId(), username);
+            return row > 0;
         }
         if (BizOrderConstant.ONLY_SUB == bizOrder.getType()) {
             return false;
         }
         List<BizOrder> subOrders = bizOrderMapper.findByParentId(orderId);
-        subOrders.stream().forEach(b -> orderIds.add(b.getId()));
+        subOrders.stream().forEach(b -> {
+            orderIds.add(b.getId());
+        });
+        bizOrderMapper.batchSetPayInfo(orderIds,username);
         row = bizOrderMapper.updateStatusToCanceled(orderIds, BizOrderConstant.TRANSPORTING.intValue());
         return row > 0;
     }
@@ -167,6 +174,7 @@ public class OrderServiceImpl implements OrderService {
                 .buyer(request.getHeader("username"))
                 .status(BizOrderConstant.NOT_PAY)
                 .itemId(buyItem.getItemId())
+                .discount(0L)
                 .build();
     }
 
