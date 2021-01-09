@@ -14,7 +14,7 @@ import java.io.IOException;
  * @date: 2021/1/9 2:16
  */
 @CrossOrigin
-@RestController("upload")
+@RestController
 public class UploadController {
 
     //前端demo

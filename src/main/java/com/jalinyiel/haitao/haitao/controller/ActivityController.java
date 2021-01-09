@@ -16,7 +16,7 @@ import java.util.List;
  * cz
  */
 @CrossOrigin
-@RestController("activity")
+@RestController
 public class ActivityController {
 
     @Autowired
@@ -51,7 +51,7 @@ public class ActivityController {
     }
 
     @RequestMapping(value = "/updateactivity/{id}", method = RequestMethod.PUT)
-    ResponseResult updateActivity(Activity activity) {
+    ResponseResult updateActivity(@RequestBody Activity activity) {
         try {
             Activity newActivity = activityService.update(activity);
             return ResponseResult.successResult(CommonResultCode.SUCCESS, newActivity);

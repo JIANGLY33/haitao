@@ -7,7 +7,6 @@ import com.jalinyiel.haitao.haitao.model.exception.DaoException;
 import com.jalinyiel.haitao.haitao.model.vo.CategoryNumVo;
 import com.jalinyiel.haitao.haitao.model.vo.ItemVo;
 import com.jalinyiel.haitao.haitao.service.ItemService;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +16,7 @@ import java.util.List;
  * cz
  */
 @CrossOrigin
-@RestController("item")
+@RestController
 public class ItemController {
 
     @Autowired

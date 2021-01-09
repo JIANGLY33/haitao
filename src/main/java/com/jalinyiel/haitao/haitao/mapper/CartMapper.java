@@ -17,8 +17,16 @@ public interface CartMapper {
     Cart findByOwner(String owner);
 
     @Update({"<script>",
-            "UPDATE cart SET items_detail = #{itemDetail}",
+            "UPDATE cart SET items_detail = #{itemDetail} ",
             "WHERE owner = #{username}",
             "</script>"})
     Integer updateItemDetail(String itemDetail, String username);
+
+    @Insert({"<script>",
+            "INSERT INTO cart(id, items_detail, owner, gmt_create, gmt_modified) ",
+            "VALUES (#{id}, #{itemsDetail}, #{owner} ,now(), now()",
+            ")",
+            "</script>"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    Long insertCart(Cart cart);
 }

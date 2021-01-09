@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @CrossOrigin
-@RestController("carousel")
+@RestController
 public class CarouselController {
 
     @Autowired

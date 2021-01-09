@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@RestController("cart")
+@RestController
+@RequestMapping("cart")
 public class CartController {
 
     @Autowired

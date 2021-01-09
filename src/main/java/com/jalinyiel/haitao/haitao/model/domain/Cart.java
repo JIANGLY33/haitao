@@ -28,7 +28,7 @@ public class Cart implements Serializable {
     /**
      * 购物车拥有者的id
      */
-    private Long ownerId;
+    private String owner;
 
     /**
      * 创建时间

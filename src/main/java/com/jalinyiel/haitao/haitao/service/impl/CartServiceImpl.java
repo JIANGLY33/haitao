@@ -51,6 +51,11 @@ public class CartServiceImpl implements CartService {
             return false;
         }
         Cart cart = cartMapper.findByOwner(username);
+
+        if (null == cart) {
+            cart = initCart(username);
+            cartMapper.insertCart(cart);
+        }
         Integer count = 0;
         try {
             List<CartItemVo> cartItemVos = redisTemplate.boundListOps(username).range(0, -1);
@@ -88,14 +93,22 @@ public class CartServiceImpl implements CartService {
     public Boolean removeItemFromCart(String username, BuyItemsVo.BuyItem buyItem) {
         if (null == buyItem) return false;
         Cart cart = cartMapper.findByOwner(username);
-        Integer count = 0;
         try {
             List<CartItemVo> cartItemVos = jsonToCartItemVoList(cart.getItemsDetail());
-
             CartItemVo cartItemVo = generateCartItemVo(buyItem);
-            cartItemVos.remove(cartItemVo);
+            List<CartItemVo> cacheCartItems = redisTemplate.boundListOps(username).range(0, -1);
+            int index = -1;
+            for (int i = 0; i < cartItemVos.size(); i++) {
+                if (cartItemVos.get(i).getItemId().equals(buyItem.getItemId())) {
+                    cartItemVo.setAmount(cacheCartItems.get(i).getAmount());
+                    index = i;
+                    break;
+                }
+            }
+            if (-1 == index) return false;
+            //c
+            cartItemVos.remove(index);
             redisTemplate.boundListOps(username).remove(1, cartItemVo);
-            count++;
             cartMapper.updateItemDetail(cartItemVosToJson(cartItemVos), username);
         } catch (JsonProcessingException e) {
             log.error("failed to parse cart items.", e);
@@ -147,5 +160,12 @@ public class CartServiceImpl implements CartService {
         cartItemVo.setPrice(buyItem.getActualPrice());
         cartItemVo.setAmount(buyItem.getAmount());
         return cartItemVo;
+    }
+
+    private Cart initCart(String username) {
+        Cart cart = new Cart();
+        cart.setOwner(username);
+        cart.setItemsDetail("");
+        return cart;
     }
 }
