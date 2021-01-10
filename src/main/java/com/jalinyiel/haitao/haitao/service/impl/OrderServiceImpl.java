@@ -35,38 +35,38 @@ public class OrderServiceImpl implements OrderService {
     ItemMapper itemMapper;
 
     @Override
-    public Long buy(BuyItemsVo buyItemsVo) {
-        List<BuyItemsVo.BuyItem> buyItems = buyItemsVo.getBuyItems();
-        if (1 == buyItems.size() && 1 == buyItems.get(0).getAmount()) {
-            LogisOrder logisOrder = generateLogisOrder(buyItemsVo);
-            logisOrderMapper.insertLogisOrder(logisOrder);
-            BuyItemsVo.BuyItem buyItem = buyItems.get(0);
-            BizOrder bizOrder = generateBizOrder(buyItem, BizOrderConstant.PARENT_SUB);
-            bizOrder.setLogisOrderId(logisOrder.getId());
-            bizOrderMapper.insertBizOrder(bizOrder);
-            return bizOrder.getId();
-        }
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-        String buyer = request.getHeader("username");
+public Long buy(BuyItemsVo buyItemsVo) {
+    List<BuyItemsVo.BuyItem> buyItems = buyItemsVo.getBuyItems();
+    if (1 == buyItems.size() && 1 == buyItems.get(0).getAmount()) {
         LogisOrder logisOrder = generateLogisOrder(buyItemsVo);
         logisOrderMapper.insertLogisOrder(logisOrder);
-        BizOrder parentOrder =
-                BizOrder.builder()
-                        .logisOrderId(logisOrder.getId())
-                        .buyer(buyer)
-                        .status(BizOrderConstant.NOT_PAY)
-                        .type(BizOrderConstant.ONLY_PARENT)
-                        .build();
-        bizOrderMapper.insertBizOrder(parentOrder);
-        buyItems.stream().forEach(buyItem -> {
-            BizOrder bizOrder = generateBizOrder(buyItem, BizOrderConstant.ONLY_SUB);
-            bizOrder.setLogisOrderId(logisOrder.getId());
-            bizOrder.setParentId(parentOrder.getId());
-            bizOrderMapper.insertBizOrder(bizOrder);
-        });
-        return parentOrder.getId();
+        BuyItemsVo.BuyItem buyItem = buyItems.get(0);
+        BizOrder bizOrder = generateBizOrder(buyItem, BizOrderConstant.PARENT_SUB);
+        bizOrder.setLogisOrderId(logisOrder.getId());
+        bizOrderMapper.insertBizOrder(bizOrder);
+        return bizOrder.getId();
     }
+    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+            .getRequest();
+    String buyer = request.getHeader("username");
+    LogisOrder logisOrder = generateLogisOrder(buyItemsVo);
+    logisOrderMapper.insertLogisOrder(logisOrder);
+    BizOrder parentOrder =
+            BizOrder.builder()
+                    .logisOrderId(logisOrder.getId())
+                    .buyer(buyer)
+                    .status(BizOrderConstant.NOT_PAY)
+                    .type(BizOrderConstant.ONLY_PARENT)
+                    .build();
+    bizOrderMapper.insertBizOrder(parentOrder);
+    buyItems.stream().forEach(buyItem -> {
+        BizOrder bizOrder = generateBizOrder(buyItem, BizOrderConstant.ONLY_SUB);
+        bizOrder.setLogisOrderId(logisOrder.getId());
+        bizOrder.setParentId(parentOrder.getId());
+        bizOrderMapper.insertBizOrder(bizOrder);
+    });
+    return parentOrder.getId();
+}
 
     @Override
     public List<OrderItemVo> getOrderAllItems(Long orderId) {

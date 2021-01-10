@@ -68,7 +68,12 @@ public class CartServiceImpl implements CartService {
         try {
 //            List<CartItemVo> cartItemVos = redisTemplate.boundListOps(username).range(0, -1);
             String cacheItems = (String) redisTemplate.boundValueOps(username).get();
-            List<CartItemVo> cartItemVos = jsonToCartItemVoList(cart.getItemsDetail());
+            List<CartItemVo> cartItemVos = null;
+            if (!"".equals(cart.getItemsDetail())) {
+                cartItemVos = jsonToCartItemVoList(cart.getItemsDetail());
+            } else {
+                cartItemVos = new ArrayList<>();
+            }
 
             CartItemVo cartItemVo = generateCartItemVo(buyItem);
             //新增商品在list中的下标
