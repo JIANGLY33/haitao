@@ -17,6 +17,5 @@ public class UserUtil {
 
     public static String encryBase64(String word) {
         return Base64.getEncoder().encodeToString(word.getBytes());
-
     }
 }

@@ -19,17 +19,6 @@ public class FileUtil {
 
     public static List<String> picDir = Arrays.asList("item","banner","portrait","activity");
 
-    public static void uploadFile(byte[] file, String filePath, String fileName) throws Exception {
-        File targetFile = new File(filePath);
-        if (!targetFile.exists()){
-            targetFile.mkdirs();
-        }
-        FileOutputStream out = new FileOutputStream(filePath + fileName);
-        out.write(file);
-        out.flush();
-        out.close();
-    }
-
     public static String getCurTime() {
         SimpleDateFormat tempDate = new SimpleDateFormat("yyyyMMddHHmmss");
         return tempDate.format(new Date());
@@ -52,7 +41,7 @@ public class FileUtil {
         }
         try {
             file.transferTo(dest);
-            return ResponseResult.successResult(CommonResultCode.SUCCESS, dir + "\\" + newFileName);
+            return ResponseResult.successResult(CommonResultCode.SUCCESS, dir + "/" + newFileName);
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }

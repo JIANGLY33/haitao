@@ -53,6 +53,7 @@ public class ActivityController {
     @RequestMapping(value = "/updateactivity", method = RequestMethod.PUT)
     ResponseResult updateActivity(@RequestBody Activity activity) {
         try {
+            System.out.println(activity);
             Activity newActivity = activityService.update(activity);
             return ResponseResult.successResult(CommonResultCode.SUCCESS, newActivity);
         } catch (DaoException daoException) {

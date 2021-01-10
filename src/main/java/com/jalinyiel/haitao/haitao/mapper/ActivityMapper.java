@@ -44,7 +44,9 @@ public interface ActivityMapper {
             @Result(column = "end_time", property = "endTime"),
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified"),
-            @Result(column = "id", property = "items", many = @Many(select = "com.jalinyiel.haitao.haitao.mapper.ItemMapper.findItemsByActivityId"))
+            @Result(column = "id", property = "items", many = @Many(
+                    select = "com.jalinyiel.haitao.haitao.mapper.ItemMapper.findItemsByActivityId"
+            ))
     })
     List<ActivityItemVo> findActivityAllItem();
 
@@ -83,7 +85,7 @@ public interface ActivityMapper {
                     SET("start_time = #{startTime}");
                 }
                 if (null != activity.getEndTime()) {
-                    SET("endTime = #{endTime}");
+                    SET("end_time = #{endTime}");
                 }
                 SET("gmt_modified = now()");
                 WHERE("id = #{id}");

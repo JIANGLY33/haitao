@@ -26,24 +26,24 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    ResponseResult<LogInResponse> login(@RequestBody LogInVo logInVo) {
-        try {
-            boolean success = userService.logIn(logInVo);
-            if (!success) {
-                return ResponseResult.failedResult(CommonResultCode.UNAUTHORIZED);
-            }
-            HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes())
-                    .getRequest();
-            String username = logInVo.getUsername();
-            String logInTag = UserUtil.getLogInTag(username);
-            request.getSession().setAttribute("username",username);
-            request.getSession().setAttribute(username,logInTag);
-            return ResponseResult.successResult(CommonResultCode.SUCCESS, LogInResponse.builder().logInTag(logInTag).username(username).build());
-        } catch (DaoException daoException) {
-            return ResponseResult.failedResult(CommonResultCode.FAILED);
+@RequestMapping(value = "/login", method = RequestMethod.POST)
+ResponseResult<LogInResponse> login(@RequestBody LogInVo logInVo) {
+    try {
+        boolean success = userService.logIn(logInVo);
+        if (!success) {
+            return ResponseResult.failedResult(CommonResultCode.UNAUTHORIZED);
         }
+        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes())
+                .getRequest();
+        String username = logInVo.getUsername();
+        String logInTag = UserUtil.getLogInTag(username);
+        request.getSession().setAttribute("username",username);
+        request.getSession().setAttribute(username,logInTag);
+        return ResponseResult.successResult(CommonResultCode.SUCCESS, LogInResponse.builder().logInTag(logInTag).username(username).build());
+    } catch (DaoException daoException) {
+        return ResponseResult.failedResult(CommonResultCode.FAILED);
     }
+}
 
     @RequestMapping(value = "/set", method = RequestMethod.GET)
     ResponseResult<String> setTest(@RequestParam String username) {

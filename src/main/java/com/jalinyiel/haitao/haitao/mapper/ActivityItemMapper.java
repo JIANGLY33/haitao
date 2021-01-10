@@ -42,4 +42,5 @@ public interface ActivityItemMapper {
     @Delete("DELETE FROM activity_item WHERE item_id = #{itemId} AND activity_id = #{activityId}")
     Integer delActivityItem(Long itemId, Long activityId);
 
+
 }

@@ -39,20 +39,20 @@ public interface CarouselMapper {
     })
     List<Carousel> findAll();
 
-    @Select("SELECT * FROM carousel")
-    @Results(id = "carouselWithItemDo", value = {
-            @Result(column = "id", property = "id"),
-            @Result(column = "item_id", property = "itemId"),
-            @Result(column = "item_id", property = "item", one = @One(select = "com.jalinyiel.haitao.haitao.mapper.ItemMapper.findById")),
-            @Result(column = "status", property = "status"),
-            @Result(column = "start_time", property = "startTime"),
-            @Result(column = "end_time", property = "endTime"),
-            @Result(column = "memo", property = "memo"),
-            @Result(column = "gmt_create", property = "gmtCreate"),
-            @Result(column = "gmt_modified", property = "gmtModified"),
-            @Result(column = "image", property = "image")
-    })
-    List<CarouselVo> findWithItem();
+@Select("SELECT * FROM carousel")
+@Results(id = "carouselWithItemDo", value = {
+        @Result(column = "id", property = "id"),
+        @Result(column = "item_id", property = "itemId"),
+        @Result(column = "item_id", property = "item", one = @One(select = "com.jalinyiel.haitao.haitao.mapper.ItemMapper.findById")),
+        @Result(column = "status", property = "status"),
+        @Result(column = "start_time", property = "startTime"),
+        @Result(column = "end_time", property = "endTime"),
+        @Result(column = "memo", property = "memo"),
+        @Result(column = "gmt_create", property = "gmtCreate"),
+        @Result(column = "gmt_modified", property = "gmtModified"),
+        @Result(column = "image", property = "image")
+})
+List<CarouselVo> findWithItem();
 
     @Select("SELECT * FROM carousel WHERE status = #{status}")
     @ResultMap("carouselDo")
