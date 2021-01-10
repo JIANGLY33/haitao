@@ -29,19 +29,27 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartItemVo> getCartItems(String username) {
-        List<CartItemVo> cartItemVos = redisTemplate.boundListOps(username).range(0, -1);
-        if (cartItemVos.size() < 1) {
-            Cart cart = cartMapper.findByOwner(username);
-            try {
+//        List<CartItemVo> cartItemVos = redisTemplate.boundListOps(username).range(0, -1);
+        String value = (String) redisTemplate.boundValueOps(username).get();
+        List<CartItemVo> cartItemVos = null;
+        try {
+            cartItemVos = jsonToCartItemVoList(value);
+            if (cartItemVos.size() < 1) {
+                Cart cart = cartMapper.findByOwner(username);
+
                 cartItemVos = jsonToCartItemVoList(cart.getItemsDetail());
-                cartItemVos.stream().forEach(cartItemVo -> {
-                    redisTemplate.boundListOps(username).leftPush(cartItemVo);
-                });
-            } catch (JsonProcessingException e) {
-                log.error("failed to parse cart string.", e);
-                return new ArrayList<>();
+
+//                cartItemVos.stream().forEach(cartItemVo -> {
+//                    redisTemplate.boundListOps(username).leftPush(cartItemVo);
+//                });
+
+                redisTemplate.boundValueOps(username).set(cart.getItemsDetail());
             }
+        } catch (JsonProcessingException e) {
+            log.error("failed to parse cart string.", e);
+            return new ArrayList<>();
         }
+
         return cartItemVos;
     }
 
@@ -58,9 +66,12 @@ public class CartServiceImpl implements CartService {
         }
         Integer count = 0;
         try {
-            List<CartItemVo> cartItemVos = redisTemplate.boundListOps(username).range(0, -1);
+//            List<CartItemVo> cartItemVos = redisTemplate.boundListOps(username).range(0, -1);
+            String cacheItems = (String) redisTemplate.boundValueOps(username).get();
+            List<CartItemVo> cartItemVos = jsonToCartItemVoList(cart.getItemsDetail());
+
             CartItemVo cartItemVo = generateCartItemVo(buyItem);
-            //新增商品在redis list中的下标
+            //新增商品在list中的下标
             int index = -1;
             for (int i = 0; i < cartItemVos.size(); i++) {
                 if (cartItemVos.get(i).getItemId().equals(buyItem.getItemId())) {
@@ -71,17 +82,15 @@ public class CartServiceImpl implements CartService {
             //新增商品存在于购物车中
             if (-1 != index) {
                 //更新redis中的商品数量
-                CartItemVo itemInCart = (CartItemVo) redisTemplate.boundListOps(username).index(index);
+                CartItemVo itemInCart = cartItemVos.get(index);
                 itemInCart.setAmount(itemInCart.getAmount() + buyItem.getAmount());
-                redisTemplate.boundListOps(username).set(index, itemInCart);
-                //更新db中的商品数量
                 cartItemVos.set(index, itemInCart);
-                cartMapper.updateItemDetail(cartItemVosToJson(cartItemVos), username);
             } else { //新增商品不存在于购物车中
                 cartItemVos.add(cartItemVo);
-                redisTemplate.boundListOps(username).leftPush(cartItemVo);
-                cartMapper.updateItemDetail(cartItemVosToJson(cartItemVos), username);
             }
+            String newCartDetail = cartItemVosToJson(cartItemVos);
+            redisTemplate.boundValueOps(username).set(newCartDetail);
+            cartMapper.updateItemDetail(cartItemVosToJson(cartItemVos), username);
         } catch (JsonProcessingException e) {
             log.error("failed to parse cart items.", e);
             return false;
@@ -96,23 +105,26 @@ public class CartServiceImpl implements CartService {
         try {
             List<CartItemVo> cartItemVos = jsonToCartItemVoList(cart.getItemsDetail());
             CartItemVo cartItemVo = generateCartItemVo(buyItem);
-            List<CartItemVo> cacheCartItems = redisTemplate.boundListOps(username).range(0, -1);
+//            List<CartItemVo> cacheCartItems = redisTemplate.boundListOps(username).range(0, -1);
+            List<CartItemVo> cacheCartItems =
+                    jsonToCartItemVoList((String) redisTemplate.boundValueOps(username).get());
             int index = -1;
             for (int i = 0; i < cartItemVos.size(); i++) {
                 if (cartItemVos.get(i).getItemId().equals(buyItem.getItemId())) {
-                    cartItemVo.setPrice(cacheCartItems.get(i).getPrice());
-                    cartItemVo.setItemName(cacheCartItems.get(i).getItemName());
-                    cartItemVo.setImage(cacheCartItems.get(i).getImage());
-                    cartItemVo.setAmount(cacheCartItems.get(i).getAmount());
+//                    cartItemVo.setPrice(cacheCartItems.get(i).getPrice());
+//                    cartItemVo.setItemName(cacheCartItems.get(i).getItemName());
+//                    cartItemVo.setImage(cacheCartItems.get(i).getImage());
+//                    cartItemVo.setAmount(cacheCartItems.get(i).getAmount());
                     index = i;
                     break;
                 }
             }
             if (-1 == index) return false;
-            //c
             cartItemVos.remove(index);
-            redisTemplate.boundListOps(username).remove(1, cartItemVo);
-            cartMapper.updateItemDetail(cartItemVosToJson(cartItemVos), username);
+            String newCartDetail = cartItemVosToJson(cartItemVos);
+//            Long res = redisTemplate.boundListOps(username).remove(1, cartItemVo);
+            redisTemplate.boundValueOps(username).set(newCartDetail);
+            cartMapper.updateItemDetail(newCartDetail, username);
         } catch (JsonProcessingException e) {
             log.error("failed to parse cart items.", e);
             return false;
@@ -122,20 +134,22 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Integer adjustItemAmountInCart(String username, Long itemId, Integer amount) {
-        List<CartItemVo> cartItemVos = redisTemplate.boundListOps(username).range(0, -1);
-        CartItemVo cartItemVo = null;
-        int i = 0;
-        for (; i < cartItemVos.size(); i++) {
-            if (cartItemVos.get(i).getItemId().equals(itemId)) {
-                cartItemVo = cartItemVos.get(i);
-                break;
-            }
-        }
-        //todo amount数值校验
-        cartItemVo.setAmount(cartItemVo.getAmount() + amount);
-        redisTemplate.boundListOps(username).set(i, cartItemVo);
         try {
-            cartMapper.updateItemDetail(cartItemVosToJson(cartItemVos), username);
+            Cart cart = cartMapper.findByOwner(username);
+            List<CartItemVo> cartItemVos = jsonToCartItemVoList(cart.getItemsDetail());
+            CartItemVo cartItemVo = null;
+            int i = 0;
+            for (; i < cartItemVos.size(); i++) {
+                if (cartItemVos.get(i).getItemId().equals(itemId)) {
+                    cartItemVo = cartItemVos.get(i);
+                    break;
+                }
+            }
+            //todo amount数值校验
+            cartItemVo.setAmount(cartItemVo.getAmount() + amount);
+            String newCartJson = cartItemVosToJson(cartItemVos);
+            redisTemplate.boundValueOps(username).set(newCartJson);
+            cartMapper.updateItemDetail(newCartJson, username);
         } catch (JsonProcessingException e) {
             return 0;
         }
